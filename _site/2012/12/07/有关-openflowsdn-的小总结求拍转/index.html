@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>有关 OpenFlow/SDN 的小总结</title>
+  <meta name="description" content="从去年5月份开始接触OpenFlow/SDN，到现在已经折腾了一年多。期间看了很多材料，读了很多文章，也听了很多分析。正好最近需要整理一下思路，于是把能想到的东西按条目列了出来。大神路过拍砖的话麻烦轻点~">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/12/07/%e6%9c%89%e5%85%b3-openflowsdn-%e7%9a%84%e5%b0%8f%e6%80%bb%e7%bb%93%e6%b1%82%e6%8b%8d%e8%bd%ac/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">有关 OpenFlow/SDN 的小总结</h1>
+    <p class="post-meta"><time datetime="2012-12-07T00:00:00-08:00" itemprop="datePublished">Dec 7, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>从去年5月份开始接触OpenFlow/SDN，到现在已经折腾了一年多。期间看了很多材料，读了很多文章，也听了很多分析。正好最近需要整理一下思路，于是把能想到的东西按条目列了出来。大神路过拍砖的话麻烦轻点~</p>
+
+<p><strong>1、SDN 是什么？</strong></p>
+
+<p style="padding-left: 30px;">
+  a) 用middlebox 的角度，就是将转发，连带其他所有功能的配置/信息通完全过软件控制/定义/配置（UWM）<br /> b) 从系统架构的角度，给出系统抽象，形成累X86 架构的系统结构（Nick）<br /> c) 从网络的角度，是数据、控制平面分离<br /> d) 从云/数据中心的角度，是终于能够虚拟化一切的快感（OpenStack-Quantum, VMware-vSphere,优化Hadoop-IBM&amp;Rice）<br /> e) 从网络设备提供商的角度，是设备白菜化，是Google 等开源节流省钱的优先选择<br /> f) 从网络运营商的角度，是今后省钱，省屌丝的利器
+</p>
+
+<p><strong>2、OpenFlow 是什么？</strong></p>
+
+<p style="padding-left: 30px;">
+  a) 是软件定义网络的一种实现方式<br /> b) 是交换机与控制器信息交互的一种协议<br /> c) 特点是流控制<br /> d) 缺少管理能力（参考SNMP）
+</p>
+
+<p style="padding-left: 60px;">
+  i. ODL Proposal <a title="SNMP4SDN" href="https://wiki.opendaylight.org/view/Project_Proposals:SNMP4SDN">SNMP4SDN</a><br /> ii. ONF有这方面的考虑，也提出了管理协议，只是目前已知的控制器都没有implementation。<br /> iii. 目前的辅助管理协议有：<a title="The Open vSwitch Database Management Protocol" href="http://tools.ietf.org/html/rfc7047" target="_blank">The Open vSwitch Database Management Protocol</a>，<a title="OpenFlow Configuration and Management Protocol" href="https://www.opennetworking.org/sdn-resources/onf-specifications/openflow-config" target="_blank">OpenFlow Configuration and Management Protocol</a>
+</p>
+
+<p><strong>3、OpenFlow/SDN 的应用？</strong></p>
+
+<p style="padding-left: 30px;">
+  a) 简化网络配置难度（目前主要是在DCN 中）<br /> b) 简化网络管理难度（也是在DCN 中）
+</p>
+
+<p style="padding-left: 60px;">
+  i. UCSD的<a title="Hedera: Dynamic Flow Scheduling for Data Center Networks" href="http://static.usenix.org/event/nsdi10/tech/full_papers/al-fares.pdf" target="_blank">Hedera</a>，动态流控制<br /> ii. Flow Measurement，Princeton+USC这边做了<a title="Software Deﬁned Trafﬁc Measurement with OpenSketch" href="http://www.stanford.edu/~lavanyaj/papers/meas.pdf" target="_blank">OpenSketch</a>，很多其他学校也在做。流控成熟之后，就能方便上层应用提供更为智能的管理模式。
+</p>
+
+<p style="padding-left: 30px;">
+  c) 广域网TE，Google及微软都在内部WAN采用SDN提高链路带宽利用率（G家提升到90%以上，对比参考传统MPLS一半左右的利用率）<br /> d) 为上层应用提供了网络虚拟化（IaaS的重要元素）<br /> e) 提供了学术研究的平台（testbed@北邮、清华、福州大学），当然也有水论文的机会<br /> f) 创业（这方面清华还是很有心得的）
+</p>
+
+<p><strong>4、OpenFlow/SDN 的前景？</strong></p>
+
+<p style="padding-left: 30px;">
+  a) 网络管理/安全/..等应用的开发（屌丝们的新阵地）<br /> b) 提升网络性能（QoS, QoE, 云, etc.）
+</p>
+
+<p style="padding-left: 60px;">
+  i. <a title="Linux kernel MultiPath TCP project" href="http://mptcp.info.ucl.ac.be/" target="_blank">MPTCP</a>，SC12中CIT和CERN做了一个<a title="OpenFlow and Multipath TCP for Data Intensive Science" href="http://supercomputing.caltech.edu/sc12_OF_Mptcp.html" target="_blank">DEMO</a>。他们基于floodlight实现了支持多径的<a title="OpenFlow Multipath Switching for LHCone" href="http://indico.cern.ch/getFile.py/access?contribId=17&amp;resId=0&amp;materialId=slides&amp;confId=212656" target="_blank">控制器</a>。另外，西北大学、台湾成功大学+高雄大学、台湾高性能计算所、SARA、SURFnet等也都做了相关研究。[<a title="Multipathing with MPTCP and OpenFlow" href="https://noc.sara.nl/nrg/publications/SRS-2012-multipath.pdf" target="_blank">paper</a>]<br /> ii. Load Balancing，早在<a title="FlowScale demo at SC11" href="http://sc11.supercomputing.org/schedule/event_detail.php?evid=rsand101" target="_blank">SC11</a>，Indiana U就已经展示了他们的<a title="OpenFlow Based Load Balancer" href="https://github.com/InCNTRE/FlowScale" target="_blank">FlowScale</a>系统[<a title="FlowScale Home" href="http://flowscale.openflowhub.org/" target="_blank">主页</a>]。FlowScale现在也是IU<a title="Multi-Gigabit Intrusion Detection with OpenFlow and Commodity Clusters" href="http://flowscale.openflowhub.org/download/attachments/3244813/SPC-Present.pdf?version=1&amp;modificationDate=1352408831000" target="_blank">入侵检测系统</a>开发计划中的一部分。
+</p>
+
+<p style="padding-left: 30px;">
+  c) 鼓励/引领创新<br /> d) 目光短浅，剩下就不知道了&#8230;
+</p>
+
+<p><strong>5、OpenFlow/SDN 的问题？</strong></p>
+
+<p style="padding-left: 30px;">
+  a) 系统
+</p>
+
+<p style="padding-left: 60px;">
+  i. 控制器层面加入管理能力<br /> ii. 北向API 定义的竞争与局限（标准&amp;IETF）<br /> iii. 控制器安全
+</p>
+
+<p style="padding-left: 30px;">
+  b) 架构（集中式与分布式的长期之争）
+</p>
+
+<p style="padding-left: 60px;">
+  i. 逻辑中心化+物理分布式的tradeoff（TU Berlin&amp; UCB&amp; Stanford）<br /> ii. &#8220;控制虚拟机&#8221;的状态/信息转移及判定方法（UWM, 细化了上面的讨论）<br /> iii. 多控制器（Stanford: Placement problem）<br /> iv. 控制器分层（UT: <a title="Kandoo: A Framework for Efﬁcient and Scalable Ofﬂoading of Control Applications" href="http://conferences.sigcomm.org/sigcomm/2012/paper/hotsdn/p19.pdf" target="_blank">Kandoo</a>）<br /> v. 现网融合（VXLAN,因为组播,Cisco 各种被Juniper 吐槽&#8230;）
+</p>
+
+<p style="padding-left: 30px;">
+  c) 原理
+</p>
+
+<p style="padding-left: 60px;">
+  i. TCAM 的局限（<a title="MSRA在Sigcomm 2012，HotSDN分会场上的论文" href="http://conferences.sigcomm.org/sigcomm/2012/paper/hotsdn/p31.pdf" target="_blank">MSRA+CPU</a>; OpenFlow 的问题，也是网管问题的来源）。12年12月的采访中，Nicira创始人Martin Casado<a title="Why Nicira abandoned OpenFlow hardware control" href="http://searchnetworking.techtarget.com/news/2240174517/Why-Nicira-abandoned-OpenFlow-hardware-control" target="_blank">认为</a>，OpenFlow在DCN中的实现应该基于Virtual Switch，而不是硬件OF交换机。<br /> ii. 对应于DPI（深度包解析）的支持（有人认为可以，有人认为不行）。不过，12年12月的SDN高峰会上，<a title="武汉绿色网络信息服务有限责任公司" href="http://www.greenet.net.cn" target="_blank">武汉绿网</a>展示了基于X86平台的OpenFlow DPI<a title="GN魔方平台" href="http://www.greenet.net.cn/templets/greenet/cubeplatform/sdnxq.html" target="_blank">解决方案</a>，性能可以达到10Mpps、40Gbps。
+</p>
+
+<p style="padding-left: 30px;">
+  d) 应用
+</p>
+
+<p style="padding-left: 60px;">
+  i. 流表冲突检测（<a title="A Security Enforcement Kernel for OpenFlow Networks" href="http://faculty.cs.tamu.edu/guofei/paper/FortNOX-HotSDN12.pdf" target="_blank">TAMU</a> HotSDN 12，虽说主要是&#8217;Security Enforcement Kernel&#8217;，但是还是有部分内容处理流表项冲突）<br /> ii. 攻击防范（e.g. Sigcomm 2012[<a title="Hot Topics in Software Defined Networking (HotSDN)" href="http://conferences.sigcomm.org/sigcomm/2012/hotsdn.php" target="_blank">HotSDN</a>]，<a title="OpenFlow Random Host Mutation: Transparent Moving Target Defense using Software Deﬁned Networking" href="http://conferences.sigcomm.org/sigcomm/2012/paper/hotsdn/p127.pdf" target="_blank">北卡夏洛特</a>）<br /> iii. 管理功能の部署（Stanford,似乎是参与设计NetFPGA 的清华GG 在做这个诶,prototype:精灵&#8230;膜拜）
+</p>
+
+<p> </p>
+
+<p><strong>更新历史：</strong><br />
+2013-07-23 更新 2.d，添加现有管理协议； 添加 3.c； 修改 5.a.i<br />
+2014-01-16 添加链接 5.d.i<br />
+2014-01-26 更新The Open vSwitch Database Management Protocol RFC文档链接<br />
+2014-02-19 添加链接 2.d.i</p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

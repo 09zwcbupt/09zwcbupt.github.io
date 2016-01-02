@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>月末写一篇～ 关于Mininet的简单修改</title>
+  <meta name="description" content="[基于Mininet 1.0]在openflow的实验中，Mininet可以说是一款非常有用，也是功能非常强大的模拟软件。相对于拿ns2来进行of仿真，自带Open Flow协议（1.0版），利用Open VSwitch作为虚拟平台，并将NOX控制器一并收入的Mininet显然可以让人省下很多精力。另外，Mini...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/08/31/%e6%9c%88%e6%9c%ab%e5%86%99%e4%b8%80%e7%af%87%ef%bd%9e-%e5%85%b3%e4%ba%8emininet%e7%9a%84%e7%ae%80%e5%8d%95%e4%bf%ae%e6%94%b9/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">月末写一篇～ 关于Mininet的简单修改</h1>
+    <p class="post-meta"><time datetime="2012-08-31T00:00:00-07:00" itemprop="datePublished">Aug 31, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>[基于Mininet 1.0]<br />
+在openflow的实验中，Mininet可以说是一款非常有用，也是功能非常强大的模拟软件。相对于拿ns2来进行of仿真，自带Open Flow协议（1.0版），利用Open VSwitch作为虚拟平台，并将NOX控制器一并收入的Mininet显然可以让人省下很多精力。另外，Mininet的拓扑搭建异常简单，并且还有一个图形化的拓扑生成app（可惜是测试版的，不能把已经画好的拓扑存下来…）。正式因此，在<a title="Mininet – “懒惰”网络研究者的福音" href="http://www.tektalk.org/2011/01/08/mininet-%E2%80%93-%E2%80%9C%E6%87%92%E6%83%B0%E2%80%9D%E7%BD%91%E7%BB%9C%E7%A0%94%E7%A9%B6%E8%80%85%E7%9A%84%E7%A6%8F%E9%9F%B3/" target="_blank">弯曲评论的一篇文章</a>中，Mininet被描述成“‘懒惰’网络研究者的福音”。<del datetime="2012-08-31T08:08:12+00:00">所以赶快拿起电话吧！拨打800-xxx-xxx电话订购热线，更能享受6折优惠！</del></p>
+
+<p>不过我在使用Mininet的时候，感觉控制台可以使用的命令少了点，也没有留出比较简单的api来支持用户自定义命令。这样，如果想在一个虚拟host较多的虚拟环境中做一些批量的事请就需要非常大的工作量，比如互ping（不过，这个功能倒是有）。</p>
+
+<p>于是，为了找一个比较好的解决方法，我看了看Mininet的控制台部分的代码。出乎意料的事，控制台部分，乃至整个Mininet的基本架构都是用Python写出来的，于是花了一个下午做了个Mininet命令行用户自定义命令的模板。<!--more--></p>
+
+<p>先是功能部分代码。这些函数定义需要放在<strong>~/mininet/mininet/net.py</strong>中的Mininet类里面。<br />
+<code lang="python">&lt;br /&gt;
+def dhcp( self, hosts=None ):&lt;br /&gt;
+    if not hosts:&lt;br /&gt;
+        hosts = self.hosts&lt;br /&gt;
+        output( 'Dhclient: Based on pingall testn' )&lt;br /&gt;
+    for node in hosts:&lt;br /&gt;
+        node.cmd( 'dhclient' )&lt;br /&gt;
+    return&lt;br /&gt;
+def dhcpAll( self ):&lt;br /&gt;
+    return self.dhcp()&lt;br /&gt;
+</code></p>
+
+<p>上面的代码实际上就是一个大循环，然后让Mininet中的每一个虚拟主机都想DHCP服务器发出申请。写完功能代码，&lt;/code&gt;然后就是在控制台中注册注册这个函数。具体位置在<strong>~/mininet/mininet/cli.py</strong></p>
+
+<p><code lang="python">&lt;br /&gt;
+def do_dhcpall( self, line ):&lt;br /&gt;
+    "Dhcp for all hosts."&lt;br /&gt;
+    print "Dhcp for all hosts."&lt;br /&gt;
+    print "mn:", self.mn&lt;br /&gt;
+    self.mn.dhcpAll()&lt;br /&gt;
+</code></p>
+
+<p>这段代码中，”dhcpall”是控制台中可以执行的命令，而这个函数的具体作用，就是在控制台收到”dhcpall”指令的时候，执行self.mn.dhcpAll()这个函数。这样，控制端的命令绑定也就完成了。不过，现在还没有完成。最后的一步是在mininet核心代码中注册。位置是<strong>~/mininet/scripts-2.6/mn</strong></p>
+
+<p><code lang="python">&lt;br /&gt;
+# optional tests to run&lt;br /&gt;
+TESTS = [ 'cli', 'build', 'dhcpall', 'pingall', 'pingpair',&lt;br /&gt;
+          'iperf', 'all', 'iperfudp', 'none' ]&lt;/p&gt;
+&lt;p&gt;ALTSPELLING = { 'dhcpall': 'dhcpAll', 'pingall': 'pingAll',&lt;br /&gt;
+             'pingpair': 'pingPair', 'iperfudp': 'iperfUdp',&lt;br /&gt;
+             'iperfUDP': 'iperfUdp', 'prefixlen': 'prefixLen' }&lt;br /&gt;
+</code><br />
+这样，代码的修改就完成了。最后还要重新编译一边mininet【因为是和C混编，所以这一步必须要做… 将<strong>~/mininet/util/install.sh</strong>中从git获取mininet包的语句注释掉(更新需要的命令如下:<br />
+<code class="highlighter-rouge">echo “Installing Mininet core”&lt;br /&gt;
+pushd ~/mininet&lt;br /&gt;
+sudo make install&lt;br /&gt;
+popd</code><br />
+)，然后再运行一次，Mininet修改版就可以用了～</p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

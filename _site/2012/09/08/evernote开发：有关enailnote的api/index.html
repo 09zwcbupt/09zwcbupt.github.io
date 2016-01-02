@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Evernote开发：有关EnailNote的API</title>
+  <meta name="description" content="虽说Evernote的API给的比较简单易用，但还是存在诸多问题。首先就是数据导出方面的问题。与网页文件的HTML格式不同，Evernote使用的是自家的enml数据格式。这就使得导出的时候出现一些问题：数据格式不通用。不但不通用，在API中还没有给出格式转换的工具。但是说实话，拥有独特的数据格式本应不是什么大问...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/09/08/evernote%e5%bc%80%e5%8f%91%ef%bc%9a%e6%9c%89%e5%85%b3enailnote%e7%9a%84api/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Evernote开发：有关EnailNote的API</h1>
+    <p class="post-meta"><time datetime="2012-09-08T00:00:00-07:00" itemprop="datePublished">Sep 8, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>虽说Evernote的API给的比较简单易用，但还是存在诸多问题。首先就是数据导出方面的问题。与网页文件的HTML格式不同，Evernote使用的是自家的enml数据格式。这就使得导出的时候出现一些问题：数据格式不通用。不但不通用，在API中还没有给出格式转换的工具。但是说实话，拥有独特的数据格式本应不是什么大问题。只是对于我这样的小开发者来说，这样的设置显然是大大降低了易用度。</p>
+
+<p>话说回来，之前看到，Evernote论坛上，他们的工程师（好象是）说如果想做到数据格式转换，那么最好还是通过E-mail转发Note的方式来完成。<del datetime="2012-09-08T01:06:46+00:00">但是一旦接受了这样的设定</del>无奈之下，我做了Gmail邮件的抓取和解析（代码在之前的文章里有贴出来）。万事具备，于是我开始测试官网上提供的EmailNote这个API。结果，真正坑爹的BUG出现了…</p>
+
+<p>写出来的代码完全没法用，Evernote一直报错，错误类型还是针对我Developer Token的“PERMISSION_DENIED”。上网查询，在Evernote的官网论坛上也找到一段<a title="Problem sending email" href="http://discussion.evernote.com/topic/23907-emailnote-returns-errorcode-permission-denied/" target="_blank">对话</a>，讨论的正是我遇到的问题。Evernote的人说到先是“ The emailNote function <strong>only works with a client key</strong> but not with a oAuth key”，然后又说“<strong>Client keys aren’t available anymore</strong> (<a title="External link" href="http://blog.evernote.com/tech/2012/04/24/security-enhancements-for-third-party-authentication/" rel="nofollow external">learn why here</a>) and third party application <strong>cannot access that functionnality anymore</strong>.”<br />
+<!--more--></p>
+
+<p>泥马，API改成自家用之后还放出来招摇过市…不过好在Evernote的人回复说“We are continually working on improving our documentation and <strong>this will be taken care of very soon</strong>”，只是两个多月已经过去了，这API还是不能用。</p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

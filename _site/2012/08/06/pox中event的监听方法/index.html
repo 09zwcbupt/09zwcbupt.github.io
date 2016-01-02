@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>POX中Event的监听方法</title>
+  <meta name="description" content="内容源自注释文件。文档位置： ../pox/lib/revent/revent.py">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/08/06/pox%e4%b8%adevent%e7%9a%84%e7%9b%91%e5%90%ac%e6%96%b9%e6%b3%95/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">POX中Event的监听方法</h1>
+    <p class="post-meta"><time datetime="2012-08-06T00:00:00-07:00" itemprop="datePublished">Aug 6, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>内容源自注释文件。文档位置： ../pox/lib/revent/revent.py</p>
+
+<p>1、监听单独的event可以采用的方法：<br />
+<code lang="python">&lt;br /&gt;
+def bar_handler(self, event):&lt;br /&gt;
+print "bar!", event&lt;/p&gt;
+&lt;p&gt;pox.core.addListener(UpEvent, bar_handler)</code></p>
+
+<div>
+</div>
+
+<div>
+  2、监听多个event的方法：
+</div>
+
+<div>
+</div>
+
+<p><code lang="python">&lt;br /&gt;
+class Sink (EventMixin):&lt;br /&gt;
+def __init__(self):&lt;br /&gt;
+# 通知revent，监听pox.core产生的events&lt;br /&gt;
+self.listenTo(pox.core)&lt;/p&gt;
+&lt;p&gt;def _handle_ComponentRegistered (self, event):&lt;br /&gt;
+# 函数名有特殊含义：带有 '_handle_' 和 已注册的&lt;br /&gt;
+# EventType 的函数会被自动认为是event handler&lt;br /&gt;
+# 当pox.core启动一个事件时，会自动调用这个处理函数。&lt;/p&gt;
+&lt;p&gt;# Most event handlers are passed an event object&lt;br /&gt;
+# as a parameter (though individual Event classes&lt;br /&gt;
+# can override this behavior by altering their&lt;br /&gt;
+# _invoke() method).&lt;br /&gt;
+component = event.component&lt;br /&gt;
+name = event.name&lt;br /&gt;
+print "I see you,", name, "!"</code></p>
+
+<div>
+  <!--more-->
+</div>
+
+<div>
+  3、Event源也可以使用EventMixin库:
+</div>
+
+<div>
+</div>
+
+<p><code lang="python">&lt;br /&gt;
+class Source (EventMixin):&lt;br /&gt;
+# 这个定义告诉revent库，这个源可以启动什么样的event&lt;br /&gt;
+_eventMixin_events = set([ComponentRegistered])&lt;/p&gt;
+&lt;p&gt;def __init__ (self):&lt;br /&gt;
+foo()&lt;/p&gt;
+&lt;p&gt;def foo (self):&lt;br /&gt;
+# 如下步骤启动events&lt;br /&gt;
+component = "fake_pox_component"&lt;br /&gt;
+self.raiseEvent(ComponentRegistered(component))&lt;/p&gt;
+&lt;p&gt;# In the above invocation, the argument is an&lt;br /&gt;
+# instance of ComponentRegistered (which is a&lt;br /&gt;
+# subclass of Event).  The following is funct-&lt;br /&gt;
+# ionally equivalent, but has the nice property&lt;br /&gt;
+# that ComponentRegistered is never instantiated&lt;br /&gt;
+# if there are no listeners.&lt;br /&gt;
+#self.raiseEvent(ComponentRegistered, component)&lt;br /&gt;
+# In both cases, "component" is passed to the&lt;br /&gt;
+# __init__ method for the ComponentRegistered class.&lt;/p&gt;
+&lt;p&gt;# The above method invocation will raise an&lt;br /&gt;
+# exception if an event handler rauses an exception.&lt;br /&gt;
+# To project yourself from exceptions in handlers,&lt;br /&gt;
+# see raiseEventNoErrors().</code></p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

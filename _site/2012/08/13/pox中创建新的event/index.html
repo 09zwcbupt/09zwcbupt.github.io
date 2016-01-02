@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>POX中创建新的Event</title>
+  <meta name="description" content="POX的整体结构属于publish–subscribe pattern。在wiki发布/订阅条目[1]上有如下解释：">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/08/13/pox%e4%b8%ad%e5%88%9b%e5%bb%ba%e6%96%b0%e7%9a%84event/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">POX中创建新的Event</h1>
+    <p class="post-meta"><time datetime="2012-08-13T00:00:00-07:00" itemprop="datePublished">Aug 13, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>POX的整体结构属于publish–subscribe pattern。在wiki发布/订阅条目[1]上有如下解释：</p>
+
+<blockquote>
+  <p>发布/订阅（Publish/subscribe 或pub/sub）是一种消息范式，消息的发送者（发布者）不是计划发送其消息给特定的接收者（订阅者）。而是发布的消息分为不同的类别，而不需要知道什么样的订阅者订阅。订阅者对一个或多个类别表达兴趣，于是只接收感兴趣的消息，而不需要知道什么样的发布者发布的消息。这种发布者和订阅者的解耦可以允许更好的<strong>可扩放性</strong>和<strong>更为动态的网络拓扑</strong>.</p>
+</blockquote>
+
+<p>创建新的事件，pox wiki[2]上有比较详细的解释。下面是一份可用的代码。<!--more--></p>
+
+<p>1、事件声明&amp;调用(TestEvent_Generator)：<br />
+<code lang="python">&lt;br /&gt;
+import pox&lt;br /&gt;
+import pox.openflow.libopenflow_01 as of&lt;br /&gt;
+from pox.core import core&lt;br /&gt;
+from pox.lib.revent import *&lt;br /&gt;
+from pox.lib.addresses import IPAddr&lt;br /&gt;
+log = core.getLogger()&lt;/p&gt;
+&lt;p&gt;class TestEvent (Event):&lt;br /&gt;
+  def __init__ (self, stuff):&lt;br /&gt;
+    Event.__init__(self)&lt;br /&gt;
+    self.stuff = stuff&lt;/p&gt;
+&lt;p&gt;class TestEvent_Generator (EventMixin):&lt;br /&gt;
+  _eventMixin_events = set([TestEvent,])&lt;br /&gt;
+  def __init__ (self):&lt;br /&gt;
+    self.listenTo(core)&lt;/p&gt;
+&lt;p&gt;  def _handle_GoingUpEvent (self, event):&lt;br /&gt;
+    self.listenTo(core.openflow)&lt;br /&gt;
+    log.debug("Up...")&lt;/p&gt;
+&lt;p&gt;  def foo(self):&lt;br /&gt;
+    stuff = "Content in TESTEVENT"&lt;br /&gt;
+    self.raiseEvent(TestEvent, stuff)&lt;/p&gt;
+&lt;p&gt;  def _handle_PacketIn (self, event):&lt;br /&gt;
+    print "handling PACKETIN event by raising a TESTEVENT:"&lt;br /&gt;
+    self.foo()&lt;br /&gt;
+    return&lt;/p&gt;
+&lt;p&gt;def launch ():&lt;br /&gt;
+  core.registerNew(TestEvent_Generator)&lt;br /&gt;
+</code></p>
+
+<p>2、事件监听（TestEvent_Listener）：<br />
+<code lang="python">&lt;br /&gt;
+import pox&lt;br /&gt;
+import pox.openflow.libopenflow_01 as of&lt;br /&gt;
+from pox.core import core&lt;br /&gt;
+from pox.lib.revent import *&lt;br /&gt;
+from pox.lib.addresses import IPAddr&lt;br /&gt;
+log = core.getLogger()&lt;/p&gt;
+&lt;p&gt;class TestEvent_Listener (EventMixin):&lt;br /&gt;
+  def __init__ (self):&lt;br /&gt;
+    self.listenTo(core)&lt;/p&gt;
+&lt;p&gt;  def _handle_GoingUpEvent (self, event):&lt;br /&gt;
+    self.listenTo(core.TestEvent_Generator)&lt;br /&gt;
+    log.debug("Up...")&lt;/p&gt;
+&lt;p&gt;  def _handle_TestEvent (self, event):&lt;br /&gt;
+    print "TestEvent_Listener is handling TEST EVENT:"&lt;br /&gt;
+    print event.stuff&lt;br /&gt;
+    return&lt;/p&gt;
+&lt;p&gt;def launch ():&lt;br /&gt;
+  core.registerNew(TestEvent_Listener)&lt;br /&gt;
+</code></p>
+
+<p>3、运行效果<br />
+TestEvent_Generator监听Core.openflow，如果产生了PacketIn事件，则调用TestEvent事件。<br />
+运行效果如下：</p>
+
+<blockquote>
+  <p>POX 0.0.0 / Copyright 2011 James McCauley<br />
+DEBUG:core:POX 0.0.0 going up…<br />
+DEBUG:core:Running on CPython (2.6.6/Sep 15 2010 16:22:56)<br />
+DEBUG:ext.TestEvent_Generator:Up…<br />
+DEBUG:ext.TestEvent_Listener:Up…<br />
+INFO:core:POX 0.0.0 is up.<br />
+DEBUG:openflow.of_01:Listening for connections on 0.0.0.0:6633<br />
+INFO:openflow.of_01:[Con ID:1/DPID:1] Connected to 00-00-00-00-00-01<br />
+TestEvent_Generator is handling PACKETIN event by raising a TESTEVENT:<br />
+TestEvent_Listener is handling TEST EVENT:<br />
+Content in TESTEVENT</p>
+</blockquote>
+
+<p>参考：<br />
+[1] http://zh.wikipedia.org/wiki/%E5%8F%91%E5%B8%83/%E8%AE%A2%E9%98%85<br />
+[2] https://openflow.stanford.edu/display/ONL/POX+Wiki#POXWiki-CreatingYourOwnEventTypes</p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Chrome插件调用CouchDB的API(1) 【过完节啦~要开学啦~</title>
+  <meta name="description" content="十一之前一直在做CouchDB的简单应用。本想着趁着国庆之前放出篇文章作为一个记录，可没成想，这一拖就拖出去了一个假期。趁着下午闲在，先写一部分出来，后面的部分留个尾巴，以后再写。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/10/07/chrome%e6%8f%92%e4%bb%b6%e8%b0%83%e7%94%a8couchdb%e7%9a%84api1-%e3%80%90%e8%bf%87%e5%ae%8c%e8%8a%82%e5%95%a6%e8%a6%81%e5%bc%80%e5%ad%a6%e5%95%a6/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Chrome插件调用CouchDB的API(1) 【过完节啦~要开学啦~</h1>
+    <p class="post-meta"><time datetime="2012-10-07T00:00:00-07:00" itemprop="datePublished">Oct 7, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>十一之前一直在做CouchDB的简单应用。本想着趁着国庆之前放出篇文章作为一个记录，可没成想，这一拖就拖出去了一个假期。趁着下午闲在，先写一部分出来，后面的部分留个尾巴，以后再写。</p>
+
+<h1 id="couchdb"><strong>一、关于CouchDB：最近想做点相关开发</strong></h1>
+
+<p>传言，CouchDB这几年很受GEEK们的喜爱。于是，算是跟风，我也打算看看这种NoSQL数据库。然后嘛，从网上copy来点段落，也算是个科普：</p>
+
+<div>
+  CouchDB的作者曾是lotus开发人员。与传统的关系型数据库不同，它号称自己是文档数据库。所谓文档数据库，并不是说它只能存储文本，事实上因为它是一种schemal-less的概念。用过关系型数据库的同学都知道，数据表里定义的每一个字段都定义为一种类型：无论是int,char,datetime。但CouchDB的字段只有三个：<strong>文档ID</strong>、<strong>文档版本号</strong>和<strong>内容</strong>。内容字段可以看到是一个text类型的文本，里面可以随意定义数据，而不用关注数据类型，但数据必须以<span style="color: #ff0000;">json的形式</span>表示并存放[插一句嘴：就是这个json格式，搞得我后来纠结了好一阵子]。例如一个表述用户的文档可以表示为：
+</div>
+
+<blockquote>
+  <div>
+  [
+</div>
+
+  <div>
+      _id:1001,
+</div>
+
+  <div>
+      _rev:1-32443289,
+</div>
+
+  <div>
+      {&#8216;name':&#8217;wentrue&#8217;, &#8216;location':&#8217;beijing&#8217;}
+</div>
+
+  <div>
+  ]
+</div>
+</blockquote>
+
+<!--more-->
+
+<p>CouchDB的底层是erlang语言，以RESTful API的格式提供服务。CouchDB的主要特点在于易用性及并发性。对于易用性我是有着深刻体会。只要一搭好服务，你不但拥有了一个听任你调遣的数据服务端，还拥有一个简洁web server，如果你是在本地部署的，在浏览器上访问http://localhost:5984/_utils/，你就可以看到一个管理与查询的后台。在那个后台，你基本能实现用其它客户端能实现的所有事情。也就是说，即便你不懂编程语言，你可以在这个管理平台自由发挥。当然，如果你懂一些javascript，那你就可以把CouchDB玩转了。</p>
+
+<p>简单介绍就到这里。如果有兴趣了解更多，点击<a href="http://www.cnblogs.com/rubylouvre/archive/2012/08/23/2653066.html">原文</a>，或者到<a href="http://wiki.apache.org/couchdb/">CouchDB Wiki</a>看看。至于我想做的开发呢，也很简单：利用Chrome插件做前端，抓取网页；然后用CouchDB储存；最后拿着自家改装的编辑器进行文本编辑（至于之后能用map-reduce做的邪恶事情，你以为我会那么轻易说出来么~）【话说，很像evernote吧~忍不住吐两句槽…要不是evernote没有ENML格式转换API，加上E-mail API一直不能用（都做出来E-mail parsing才发现API没法用…伤不起啊…），谁会想着自己动手做出个山寨似的单机版evernote呢…？</p>
+
+<h1 id="httprest"><strong>二、关于HTTP中的REST风格</strong></h1>
+
+<p>CouchDB采用的是REST架构的API。那么，什么是REST架构呢？</p>
+
+<p>表征状态转移（英文：Representational State Transfer，简称REST）是Roy Fielding 博士在2000年他的博士论文中提出来的一种软件架构 风格。目前在三种主流的Web服务 实现方案中，因为REST模式的Web服务 与复杂的SOAP 和XML-RPC 对比来讲明显的更加简洁，越来越多的web服务开始采用REST风格设计和实现。例如，Amazon 提供接近REST风格的Web服务进行图书查找；雅虎提供的Web服务也是REST风格的。</p>
+
+<p>下面几条，是REST风格的要点：</p>
+
+<ul>
+  <li>资源是由URI来指定。</li>
+  <li>对资源的操作包括获取、修改、创建和删除资源，这些操作正好对应HTTP协议提供的<strong>GET</strong>、<strong>POST</strong>、<strong>PUT</strong>和<strong>DELETE</strong>方法。</li>
+  <li>通过操作资源的表现形式来操作资源。</li>
+  <li>资源的表现形式则是XML或者HTML，取决于读者是机器还是人，是消费web服务的客户软件还是web浏览器。当然也可以是任何其他的格式。</li>
+</ul>
+
+<p>从实际操作的角度来讲，RESTful Web API 对资源的操作包括获取、修改、创建和删除资源，这些操作正好对应HTTP协议提供的GET、POST、PUT和DELETE方法。</p>
+
+<table>
+  <tr>
+    <th rowspan="1" colspan="1">
+      资源
+    </th>
+    
+    <th rowspan="1" colspan="1">
+      GET
+    </th>
+    
+    <th rowspan="1" colspan="1">
+      PUT
+    </th>
+    
+    <th rowspan="1" colspan="1">
+      POST
+    </th>
+    
+    <th rowspan="1" colspan="1">
+      DELETE
+    </th>
+  </tr>
+  
+  <tr>
+    <th rowspan="1" colspan="1">
+      一组资源的URI，比如http://exp.com/re/
+    </th>
+    
+    <td rowspan="1" colspan="1">
+      <strong>列出</strong> URI，以及该资源组中每个资源的详细信息（后者可选）。
+    </td>
+    
+    <td rowspan="1" colspan="1">
+      使用给定的一组资源<strong>替换</strong>当前整组资源。
+    </td>
+    
+    <td rowspan="1" colspan="1">
+      在本组资源中<strong>创建/追加</strong>一个新的资源。 该操作往往返回新资源的URL。
+    </td>
+    
+    <td rowspan="1" colspan="1">
+      <strong>删除</strong>整组资源。
+    </td>
+  </tr>
+</table>
+
+<h1 id="couchdbapi"><strong>三、调用CouchDB的API</strong></h1>
+
+<p>如果想要调用CouchDB的API，用curl生成HTTP请求无疑是最合适的。不过，如果想在网页中完成这些事情，就需要不同的方法。下面呢，是几种看起来还不错的选择：<br />
+1、IronPython，一种在.NET平台下实现Python的东东。用Python来生成HTTP请求当然很方便。另外，CouchDB也有支持Python的库。不过，IronPython Browser在我的机子上跑不起来…PASS<br />
+2、使用CouchDB自带的js封装库：jquery.couch.js。好玩，但是不够给力，PASS<br />
+【实际上也是没跑起来…唉…<br />
+3、用JQuery，生成HTTP Request。下面两段代码是两种生成HTTP请求的不同方法。第一个是直接调用JQuery中的HTTP请求函数（JQuery中没有直接的PUT、DELETE方法…很不方便…但是GET和POST还是可以的~）<br />
+<code lang="Javascript">&lt;br /&gt;
+function get(){&lt;br /&gt;
+  $.get('http://127.0.0.1:5984/albums');&lt;br /&gt;
+  alert("end of query.");&lt;br /&gt;
+}&lt;br /&gt;
+</code><br />
+至于PUT和DELETE嘛，可以动用JQuery中的AJAX方法封装HTTP请求<br />
+<code lang="Javascript">&lt;br /&gt;
+function ajax_put(){&lt;br /&gt;
+  $.ajax({&lt;br /&gt;
+    url: 'http://localhost:5984/albums',&lt;br /&gt;
+    type: 'DELETE',&lt;br /&gt;
+    method: 'DELETE',&lt;br /&gt;
+    success: function( response ) {&lt;br /&gt;
+      alert("success" + response);&lt;br /&gt;
+    },&lt;br /&gt;
+    error: function( response ) {&lt;br /&gt;
+      alert("fail" + response);&lt;br /&gt;
+    }&lt;br /&gt;
+  });&lt;br /&gt;
+}&lt;br /&gt;
+alert("end of query.");</code><br />
+4、不使用JQuery封装HTTP请求（最后用的还是这个~）<br />
+@Chrome控制台命令输入演示（JavaScript代码类似，就不贴了）：<br />
+<span style="color: #0080ff; font-family: Consolas, 'Lucida Console', monospace;">var oHttp=new XMLHttpRequest();<br /> oHttp.open(‘GET’,’http://localhost:5984′)<br /> oHttp.send();<br /> </span><br />
+这样，就可以用发送出HTTP请求了~不过，这样只能在IE中调用API了，如果在Chrome里面呢，则会发生如下错误：<br />
+XMLHttpRequest cannot load http://localhost:5984/. Origin null is not allowed by Access-Control-Allow-Origin.<br />
+这种错误比较邪恶，属于跨域请求错误…这个问题下次再说。</p>
+
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

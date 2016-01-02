@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>关于Mininet的拓扑生成</title>
+  <meta name="description" content="openflow开发中，使用mininet最方便的地方 就在于他的平台结构。使用mininet就意味着可以不用花时间考虑拓扑建立（硬件、虚拟机方面实现），也不用考虑自搭系统联通性方面的问题，另外，也不用考虑如何兼容openflow协议。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/09/03/%e5%85%b3%e4%ba%8emininet%e7%9a%84%e6%8b%93%e6%89%91%e7%94%9f%e6%88%90/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">关于Mininet的拓扑生成</h1>
+    <p class="post-meta"><time datetime="2012-09-03T00:00:00-07:00" itemprop="datePublished">Sep 3, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>openflow开发中，使用mininet最方便的地方 就在于他的平台结构。使用mininet就意味着可以不用花时间考虑拓扑建立（硬件、虚拟机方面实现），也不用考虑自搭系统联通性方面的问题，另外，也不用考虑如何兼容openflow协议。</p>
+
+<p>不过，虽然mininet有这么多的优点，它的不足之处还是比较明显的。首先，命令行工具比较少（或者说，作为平台来讲，开发者还不多）。另外，拓扑建立方面功能也还不够。随mininet的app中实际上有一个图形化的拓扑建立应用，无奈它只是个不成熟的版本，没有办法生成拓扑文件。</p>
+
+<p>所以，为了测试需要，我写了一段拓扑生成代码。<br />
+<!--more--></p>
+
+<p><code lang="python" height="1080" width="625">&lt;br /&gt;
+import sys&lt;br /&gt;
+import string&lt;/p&gt;
+&lt;p&gt;#first handle input parameter&lt;br /&gt;
+if len(sys.argv) &lt; 2:
+    print 'please input: --switch xx --host xxn'</code></p>
+
+<p>for i in range(1,len(sys.argv[1:])+1):
+    if sys.argv[i] == ‘–switch’ or sys.argv[i] == ‘-s’:
+        switch = string.atoi(sys.argv[i+1])
+    if sys.argv[i] == ‘–host’ or sys.argv[i] == ‘-h’:
+	    host = string.atoi(sys.argv[i+1])
+print “host:”, host, “switch:”, switch</p>
+
+<h1 id="then-about-file-we-gonna-write">then about file we gonna write</h1>
+<p>fileHandle = open ( ‘newtopo.py’, ‘w’ )
+init = “from mininet.topo import Topo, Nodennclass MyTopo( Topo ):
+n    def <strong>init</strong>( self, enable_all = True ):n        super(
+MyTopo, self ).<strong>init</strong>()n        # Set Node IDs for hosts and
+switchesn”</p>
+
+<h1 id="now-lets-create-file">now let’s create file</h1>
+<p>fileHandle.write( init )
+for i in range(1,host+1):
+    hostn = ‘        Host’ + str(i) + ‘ = ‘ + str(i) + ‘n’
+    fileHandle.write( hostn )
+for i in range(host+1,switch+host+1):
+    switchn = ‘        Switch’ + str(i-host) + ‘ = ‘ + str(i) + ‘n’
+    fileHandle.write( switchn )</p>
+
+<p>fileHandle.write( ‘n’ )
+fileHandle.write( ‘        # Add nodesn’ )
+#then write defination
+for i in range(1,host+1):
+    hostn = ‘        self.add_node( Host’ + str(i) + ‘, Node( is_switch=False ) )n’
+    #print hostn
+    fileHandle.write( hostn )
+for i in range(1,switch+1):
+    switchn = ‘        self.add_node( Switch’ + str(i) + ‘, Node( is_switch=True ) )n’
+    #print switchn
+    fileHandle.write( switchn )</p>
+
+<h1 id="at-last-create-edge">at last, create edge</h1>
+<p>fileHandle.write( ‘n’ )
+fileHandle.write( ‘        # Add edgen’ )
+for i in range(1,switch+1):
+    link = ‘        self.add_edge( Switch’ + str(i) + ‘, Switch’
++ str(switch if i == switch-1 else (i+1)%switch) +’ )n’
+    fileHandle.write( link )</p>
+
+<p>for i in range(1,host+1):
+    link = ‘        self.add_edge( Host’ + str(i) + ‘, Switch’ +
+str(switch if i%switch == 0 else i%switch) +’ )n’
+    fileHandle.write( link )</p>
+
+<p>fileHandle.write( “        self.enable_all()nn” )
+fileHandle.write( “topos = { ‘mytopo’: ( lambda: MyTopo() ) }” )
+&lt;/code&gt;</p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

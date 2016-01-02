@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Evernote开发中，弯路绕完了&#8230;</title>
+  <meta name="description" content="今天把enml到html的转换做完了。其实，重点也只有邮件的接收，还有解码的过程。目前的效果是：通过evernote邮件转发的功能将笔记发送到指定邮箱，然后再用python脚本把邮件下下来&amp;decode。最终效果就是本地完整显示笔记内容～">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/09/02/evernote%e5%bc%80%e5%8f%91%e4%b8%ad%ef%bc%8c%e5%bc%af%e8%b7%af%e7%bb%95%e5%ae%8c%e4%ba%86/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Evernote开发中，弯路绕完了&#8230;</h1>
+    <p class="post-meta"><time datetime="2012-09-02T00:00:00-07:00" itemprop="datePublished">Sep 2, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>今天把enml到html的转换做完了。其实，重点也只有邮件的接收，还有解码的过程。目前的效果是：通过evernote邮件转发的功能将笔记发送到指定邮箱，然后再用python脚本把邮件下下来&amp;decode。最终效果就是本地完整显示笔记内容～</p>
+
+<p>唯一碰到的问题就是转换不完全。从evernote格式转换到html的时候，总会在图片引用的源代码上留下个”cid:”的小尾巴。</p>
+
+<p>先上代码～首先是邮件获取部分<br />
+<!--more--></p>
+
+<p><code lang="python">&lt;br /&gt;
+import imaplib&lt;br /&gt;
+import email&lt;br /&gt;
+import StringIO&lt;/p&gt;
+&lt;p&gt;gmail_user = 'email'&lt;br /&gt;
+gmail_pass = 'pass'&lt;br /&gt;
+M = imaplib.IMAP4_SSL('imap.gmail.com')&lt;br /&gt;
+M.login(gmail_user, gmail_pass)&lt;/p&gt;
+&lt;p&gt;fileHandle = open ( 'mail_all.eml', 'w' )&lt;br /&gt;
+M.select()&lt;br /&gt;
+tpe, data = M.search(None, "(UNSEEN)")&lt;br /&gt;
+if data[0] != '':&lt;br /&gt;
+    print 'you have new mail'&lt;br /&gt;
+    for num in data[0].split():&lt;br /&gt;
+        tpe, data = M.fetch(num, '(RFC822)')&lt;br /&gt;
+        fileHandle.write ( data[0][1] )&lt;br /&gt;
+typ, data = M.search(None, 'ALL')&lt;br /&gt;
+fileHandle.close()&lt;br /&gt;
+M.close()&lt;br /&gt;
+M.logout()&lt;br /&gt;
+</code><br />
+然后是解码部分<br />
+<code lang="python">&lt;br /&gt;
+import email&lt;br /&gt;
+import re&lt;/p&gt;
+&lt;p&gt;fp = open("mail_all.eml", "r")&lt;br /&gt;
+fileHandle = open("mail_all.html", "w")&lt;br /&gt;
+msg = email.message_from_file(fp)&lt;br /&gt;
+subject = msg.get("subject")&lt;br /&gt;
+h = email.Header.Header(subject)&lt;br /&gt;
+dh = email.Header.decode_header(h)&lt;br /&gt;
+subject = dh[0][0]&lt;br /&gt;
+print "subject:", subject&lt;br /&gt;
+fileHandle.write ( subject )&lt;br /&gt;
+print "from: ", email.utils.parseaddr(msg.get("from"))[1]&lt;br /&gt;
+print "to: ", email.utils.parseaddr(msg.get("to"))[1]&lt;/p&gt;
+&lt;p&gt;for par in msg.walk():&lt;br /&gt;
+	if not par.is_multipart():&lt;br /&gt;
+		name = par.get_param("name")&lt;br /&gt;
+		if name:&lt;br /&gt;
+			h = email.Header.Header(name)&lt;br /&gt;
+			dh = email.Header.decode_header(h)&lt;br /&gt;
+			fname = dh[0][0]&lt;br /&gt;
+			print 'attachment name:', fname&lt;br /&gt;
+			data = par.get_payload(decode=True)&lt;/p&gt;
+&lt;p&gt;			try:&lt;br /&gt;
+				f = open(fname, 'wb')&lt;br /&gt;
+			except:&lt;br /&gt;
+				print 'error, change name'&lt;br /&gt;
+				f = open('aaaa', 'wb')&lt;br /&gt;
+			f.write(data)&lt;br /&gt;
+			f.close()&lt;br /&gt;
+		else:&lt;br /&gt;
+			data = par.get_payload(decode=True)&lt;br /&gt;
+			#get rid of 'cid:' and show pic correctly&lt;br /&gt;
+			strinfo = re.compile('cid:')&lt;br /&gt;
+			data = strinfo.sub('',data)&lt;br /&gt;
+			fileHandle.write ( data )&lt;br /&gt;
+		print '+'*60&lt;br /&gt;
+fp.close()&lt;br /&gt;
+</code></p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

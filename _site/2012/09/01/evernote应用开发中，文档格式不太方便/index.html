@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Evernote应用开发中，文档格式不太方便&#8230;</title>
+  <meta name="description" content="为了某些邪恶的想法，我决定用evernote的API把所有note导入本地处理。结果今天的时间几乎都花在了这个上面…虽然最终成功的把文章导出，但是同时发现了个很严重的问题：原以为evernote用html/xml直接给抓取的网页编码。结果没成想，note扒下来之后才发现，人家evernote用的是自己的enml格...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/09/01/evernote%e5%ba%94%e7%94%a8%e5%bc%80%e5%8f%91%e4%b8%ad%ef%bc%8c%e6%96%87%e6%a1%a3%e6%a0%bc%e5%bc%8f%e4%b8%8d%e5%a4%aa%e6%96%b9%e4%be%bf/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Evernote应用开发中，文档格式不太方便&#8230;</h1>
+    <p class="post-meta"><time datetime="2012-09-01T00:00:00-07:00" itemprop="datePublished">Sep 1, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>为了某些邪恶的想法，我决定用evernote的API把所有note导入本地处理。结果今天的时间几乎都花在了这个上面…虽然最终成功的把文章导出，但是同时发现了个很严重的问题：原以为evernote用html/xml直接给抓取的网页编码。结果没成想，note扒下来之后才发现，人家evernote用的是自己的enml格式（就是把xml的x改成evernote缩写…）。于是乎，各种浏览器纷纷表示无能为力。上网查询，evernote的工程师<del datetime="2012-09-01T12:37:46+00:00">不知到什么时候</del>说<del datetime="2012-09-01T12:37:46+00:00">的</del>目前还没有开发服务器端的格式转换API…瞬间傻眼了。下面先写个总结：</p>
+
+<p>说到evernote的app开发，首先可以参考官网的dev page。在开发页面中，有evernote的整体开发流程介绍：</p>
+
+<h3 id="img-classalignnone-title-srchttpww1sinaimgcnmw69065c83a2bgw1dwhbme710jjjpg-alt-width690-height186-"><img class="alignnone" title="流程介绍" src="http://ww1.sinaimg.cn/mw690/65c83a2bgw1dwhbme710jj.jpg" alt="" width="690" height="186" /></h3>
+
+<p>注册api key，下载SDK，然后再在sandbox里面注册一个新账户。就可以开发啦～lol<!--more--></p>
+
+<p>把下载的SDK解压，然后运行EDAMTest.py，注意：EDAMTest.py代码中需要填入developer token（而不是api key…）。注册developer token的地址：https://sandbox.evernote.com/api/DeveloperToken.action<br />
+执行结束，得到正确结果：<br />
+<code width="570">&lt;br /&gt;
+fnl@fnl-OptiPlex-790:~/evernote-sdk-python/sample$ python EDAMTest.py&lt;br /&gt;
+Is my Evernote API version up to date? True&lt;/p&gt;
+&lt;p&gt;Found 1 notebooks:&lt;br /&gt;
+* zhaoweichen 的笔记本&lt;/p&gt;
+&lt;p&gt;Creating a new note in the default notebook&lt;/p&gt;
+&lt;p&gt;Successfully created a new note with GUID: 3f6e1c19-54bd-48b7-ba59-b16589c7c8bb&lt;br /&gt;
+</code><br />
+随后，就可以参照evernote的API参考手册来编写APP了～最后，虽然贴做出来的代码并没有达到搞定HTML文档的效果，至少也可以把所有文档下载下来。就贴在最后吧。</p>
+
+<div>
+</div>
+
+<p><code lang="python" height="960" width="570">&lt;br /&gt;
+import sys&lt;br /&gt;
+import hashlib&lt;br /&gt;
+import binascii&lt;br /&gt;
+import time&lt;br /&gt;
+import thrift.protocol.TBinaryProtocol as TBinaryProtocol&lt;br /&gt;
+import thrift.transport.THttpClient as THttpClient&lt;br /&gt;
+import evernote.edam.userstore.UserStore as UserStore&lt;br /&gt;
+import evernote.edam.userstore.constants as UserStoreConstants&lt;br /&gt;
+import evernote.edam.notestore.NoteStore as NoteStore&lt;br /&gt;
+import evernote.edam.type.ttypes as Types&lt;br /&gt;
+import evernote.edam.error.ttypes as Errors&lt;/p&gt;
+&lt;p&gt;authToken = "填写你的developer token～"&lt;br /&gt;
+evernoteHost = "sandbox.evernote.com"&lt;br /&gt;
+userStoreUri = "https://" + evernoteHost + "/edam/user"&lt;/p&gt;
+&lt;p&gt;userStoreHttpClient = THttpClient.THttpClient(userStoreUri)&lt;br /&gt;
+userStoreProtocol = TBinaryProtocol.TBinaryProtocol(userStoreHttpClient)&lt;br /&gt;
+userStore = UserStore.Client(userStoreProtocol)&lt;/p&gt;
+&lt;p&gt;versionOK = userStore.checkVersion("Evernote EDAMTest (Python)",&lt;br /&gt;
+                                   UserStoreConstants.EDAM_VERSION_MAJOR,&lt;br /&gt;
+                                   UserStoreConstants.EDAM_VERSION_MINOR)&lt;br /&gt;
+print "Is my Evernote API version up to date? ", str(versionOK)&lt;br /&gt;
+print ""&lt;br /&gt;
+if not versionOK:&lt;br /&gt;
+    exit(1)&lt;/p&gt;
+&lt;p&gt;noteStoreUrl = userStore.getNoteStoreUrl(authToken)&lt;br /&gt;
+noteStoreHttpClient = THttpClient.THttpClient(noteStoreUrl)&lt;br /&gt;
+noteStoreProtocol = TBinaryProtocol.TBinaryProtocol(noteStoreHttpClient)&lt;br /&gt;
+noteStore = NoteStore.Client(noteStoreProtocol)&lt;/p&gt;
+&lt;p&gt;# List all of the notebooks in the user's account&lt;br /&gt;
+notebooks = noteStore.listNotebooks(authToken)&lt;br /&gt;
+print "Found ", len(notebooks), " notebooks:"&lt;br /&gt;
+for notebook in notebooks:&lt;br /&gt;
+    print "  * ", notebook.name&lt;br /&gt;
+    print "    notebook: ",notebook&lt;br /&gt;
+    print "    guid    : ",notebook.guid&lt;/p&gt;
+&lt;p&gt;print "another try"&lt;/p&gt;
+&lt;p&gt;filter = NoteStore.NoteFilter()&lt;br /&gt;
+filter.notebookGuid = notebook.guid&lt;br /&gt;
+noteList = noteStore.findNotes(authToken,filter,0,10) #only matadata&lt;br /&gt;
+for n in noteList.notes:&lt;br /&gt;
+    print n.title, n.guid&lt;br /&gt;
+    content = noteStore.getNote(authToken, n.guid, True, False, False, False)&lt;br /&gt;
+    fileHandle = open ( n.title + '.enml', 'w' )&lt;br /&gt;
+    fileHandle.write ( content.content )&lt;br /&gt;
+    fileHandle.close()&lt;br /&gt;
+</code><br />
+其实，enml格式的问题也不是没有解决方法啦～就是会比较曲线：用evernote的邮件转发API转发至邮箱，然后再从邮箱里面抓取HTML代码…同样的，这么做是需要python支持IAMP邮箱登录等功能。好在有牛逼闪闪的库文件在。废话不多说，直接上代码～<br />
+<code lang="python" width="570">&lt;br /&gt;
+import imaplib&lt;br /&gt;
+import email&lt;br /&gt;
+import StringIO&lt;/p&gt;
+&lt;p&gt;gmail_user = 'your email address'&lt;br /&gt;
+gmail_pass = 'your password'&lt;br /&gt;
+M = imaplib.IMAP4_SSL('imap.gmail.com')&lt;br /&gt;
+M.login(gmail_user, gmail_pass)&lt;br /&gt;
+M.select()&lt;br /&gt;
+fileHandle = open ( 'subject.html', 'a' )&lt;br /&gt;
+typ, data = M.search(None, 'ALL')&lt;br /&gt;
+for num in data[0].split():&lt;br /&gt;
+    typ, data = M.fetch(num, '(RFC822)')&lt;br /&gt;
+    tempMessage = StringIO.StringIO(data[0][1])&lt;br /&gt;
+    msg = email.message_from_file(tempMessage) #parsing&lt;br /&gt;
+    subject = msg.get("Subject")&lt;br /&gt;
+    h = email.Header.Header(subject)&lt;br /&gt;
+    dh = email.Header.decode_header(h)&lt;br /&gt;
+    subject = dh[0][0]&lt;br /&gt;
+    print "subject:", subject&lt;br /&gt;
+    fileHandle.write ( subject )&lt;br /&gt;
+fileHandle.close()&lt;br /&gt;
+M.close()&lt;br /&gt;
+M.logout()&lt;br /&gt;
+</code><br />
+这段代码的功能比较简单，就是登录进邮箱，然后搞到邮件，再然后把标题取出来打印到文件。（还是要赞python一个，这样的功能用不到30行代码就可以搞定～）至于具体的eml格式转换，还没写完，就不贴上来了。<br />
+关于登录，可能有的童鞋会认为直接把用户名密码写进代码不好，下面是另一种登录的方法，需要每次执行的时候都输入用户名、密码。这样的设计很适合在工程完成之后的实际使用。不过，测试的时候，还是上面那样比较省事～<br />
+<code lang="python" width="570">&lt;br /&gt;
+M.login(getpass.getuser(), getpass.getpass())&lt;br /&gt;
+</code></p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

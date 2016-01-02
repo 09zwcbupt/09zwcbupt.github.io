@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Mininet中虚拟机构成的分析</title>
+  <meta name="description" content="最近一直在使用Mininet，也逐渐的开始修改Mininet的代码。最初是修改基于Python的命令行，后来写拓扑生成的代码。早这个过程中，我发现mininet所构建出来的虚拟机都是基于当前用户的home文件夹，并且可以调用当前主机上几乎所有的文件、程序。在这个过程中对Mininet的机制越来越感兴趣。找来Nic...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2012/09/06/mininet%e4%b8%ad%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%9e%84%e6%88%90%e7%9a%84%e5%88%86%e6%9e%90/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Mininet中虚拟机构成的分析</h1>
+    <p class="post-meta"><time datetime="2012-09-06T00:00:00-07:00" itemprop="datePublished">Sep 6, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>最近一直在使用Mininet，也逐渐的开始修改Mininet的代码。最初是修改基于Python的命令行，后来写拓扑生成的代码。早这个过程中，我发现mininet所构建出来的虚拟机都是基于当前用户的home文件夹，并且可以调用当前主机上几乎所有的文件、程序。在这个过程中对Mininet的机制越来越感兴趣。找来Nick教授的<a href="http://conferences.sigcomm.org/hotnets/2010/papers/a19-lantz.pdf" title="A Network in a Laptop: Rapid Prototyping for Software-Deﬁned Networks" target="_blank">论文</a>，但是没看几眼就看不动了，学习机制的事也就先放了下来。</p>
+
+<p>昨天，需要在虚拟的host上运行基于scapy的脚本。然而在外面跑得很顺利的代码在Mininet里面连启动都启动不了。错误信息如下：</p>
+
+<p><code width="600">&lt;br /&gt;
+mininet&gt; h2 python test_scp.py&lt;br /&gt;
+Traceback (most recent call last):&lt;br /&gt;
+  File "test_scp.py", line 3, in &lt;module&gt;&lt;br /&gt;
+    from scapy.all import *&lt;br /&gt;
+  File "/usr/lib/pymodules/python2.6/scapy/all.py", line 22, in &lt;module&gt;&lt;br /&gt;
+    from route import *&lt;br /&gt;
+  File "/usr/lib/pymodules/python2.6/scapy/route.py", line 158, in &lt;module&gt;&lt;br /&gt;
+    conf.route=Route()&lt;br /&gt;
+  File "/usr/lib/pymodules/python2.6/scapy/route.py", line 18, in __init__&lt;br /&gt;
+    self.resync()&lt;br /&gt;
+  File "/usr/lib/pymodules/python2.6/scapy/route.py", line 27, in resync&lt;br /&gt;
+    self.routes = read_routes()&lt;br /&gt;
+  File "/usr/lib/pymodules/python2.6/scapy/arch/linux.py", line 148, in read_routes&lt;br /&gt;
+    ifreq = ioctl(s, SIOCGIFADDR,struct.pack("16s16x",LOOPBACK_NAME))&lt;br /&gt;
+IOError: [Errno 99] Cannot assign requested address&lt;br /&gt;
+</code><br />
+<!--more--></p>
+
+<p>单纯从错误名称可以看出来，这是绑定地址/端口的错误。但是这个错误在switch中并不会出现（switch端的测试后于host端）。这让我想到了之前手册上的说明。host和switch/controller的区别主要是namespace。host使用的是独立的namespace，而另外两种虚拟终端用的则是root namespace，也就是当前系统的root用户的命名空间。这两种的区别是什么呢？以至于使得在不同的终端中绑定行为会有不同的结果。查阅资料的时候，我看到了一位复旦童鞋的<a href="http://b.xfguo.org/wiki/MininetNote" title="Mininet Notes" target="_blank">Mininet笔记</a>。笔记中提到：“mininet使用了linux内核的一个特性:”Network Namespace”…”，同时，作者还不忘给出相关<a href="http://lxc.sourceforge.net/index.php/about/kernel-namespaces/network/" title="关于Network Namespace的一个详细介绍" target="_blank">链接</a>。下面是对etwork Namespace的简单介绍：</p>
+
+<blockquote>
+  <p>The network namespace is a private set of network resources assigned<br />
+to one or several processes. These have their own set of network<br />
+devices, IP addresses, routes, sockets and so on … Other processes<br />
+outside of the namespace <strong>cannot access these network resources,<br />
+neither know they exist</strong>.</p>
+</blockquote>
+
+<p>按照上面说法，不难得出（其实是这段英文下面的具体解释），这样的特性可以做到两件事情：virtualization和isolation。具体来讲，原文还给出了几种应用场景：</p>
+
+<blockquote>
+  <ol>
+    <li>several network namespaces can have eth0 and lo network devices.</li>
+    <li>several apache servers listening on *:80 can be launched into different network namespaces.</li>
+    <li>a process cannot sniff traffic related to another network namespace.</li>
+    <li>a process cannot shutdown an interface belonging to another network namespace.</li>
+  </ol>
+</blockquote>
+
+<p>最基本的原理搞清楚了，如果要更深如的理解Mininet，就需要分析代码+实验，看看Mininet具体使用什么方法建立的这个虚拟网络系统。不过，在这之前，先看一张图片。这张图片是Nick教授团队文章中对于Mininet结构的描述。<br />
+<a href="http://conferences.sigcomm.org/hotnets/2010/papers/a19-lantz.pdf" title="A Network in a Laptop: Rapid Prototyping for Software-Deﬁned Networks" target="_blank"><img src="http://ww4.sinaimg.cn/large/65c83a2bjw1dwmvastgo4j.jpg" alt="Mininet结构" /></a><br />
+借着Namespace的功能来看，Mininet的链接构建部分基本上比较容易理解了。借着这个理解，看看Mininet创建连接的代码究竟是怎么写的。<br />
+这事说起来简单，不过Bob童鞋的代码能力实在是牛逼。从net.py的buildFromTopo函数(line272)，调用到util.py的createLink函数(line129)，再到node.py的linkTo(line336)函数，最后才到了util的makeIntfPair函数(line79)…这么来回来去很多次，终于将topology的描述细化到真正的mn结构体中。下面贴上makeIntfPair函数的代码：<br />
+<code lang="python" width="550">&lt;br /&gt;
+def makeIntfPair( intf1, intf2 ):&lt;br /&gt;
+    """Make a veth pair connecting intf1 and intf2.&lt;br /&gt;
+       intf1: string, interface&lt;br /&gt;
+       intf2: string, interface&lt;br /&gt;
+       returns: success boolean"""&lt;br /&gt;
+    # Delete any old interfaces with the same names&lt;br /&gt;
+    quietRun( 'ip link del ' + intf1 )&lt;br /&gt;
+    quietRun( 'ip link del ' + intf2 )&lt;br /&gt;
+    # Create new pair&lt;br /&gt;
+    cmd = 'ip link add name ' + intf1 + ' type veth peer name ' + intf2&lt;br /&gt;
+    return quietRun( cmd )&lt;br /&gt;
+</code><br />
+最重要的命令在第10行。这一行里面，生成了两个veth口。并且，这两个设备是完全对称的。也就是说，除了名字不一样，它们的做用是完全相同的，从一个发出，就会从另一个收到。这样还不算完，如果只是生成两个虚拟网口+一个虚拟链接，数据包在实际通信的时候并不会在这两个的端口传输，而是集中在loopback网口中。为此，Bob童鞋终于用上了之前说到的Network Namespace。在下面的代码中，新创建出来的虚拟网口被移动到了拥有host namespace的node中。这样，先在主机中创建好网口和连接，然后再把其中一个网口挪动到node端，一个veth pair就算完工了。<br />
+<code lang="python" width="550">&lt;br /&gt;
+def moveIntfNoRetry( intf, node, printError=False ):&lt;br /&gt;
+    """Move interface to node, without retrying.&lt;br /&gt;
+       intf: string, interface&lt;br /&gt;
+       node: Node object&lt;br /&gt;
+       printError: if true, print error"""&lt;br /&gt;
+    cmd = 'ip link set ' + intf + ' netns ' + repr( node.pid )&lt;br /&gt;
+    quietRun( cmd )&lt;br /&gt;
+    links = node.cmd( 'ip link show' )&lt;br /&gt;
+    if not ( ' %s:' % intf ) in links:&lt;br /&gt;
+        if printError:&lt;br /&gt;
+            error( '*** Error: moveIntf: ' + intf +&lt;br /&gt;
+                ' not successfully moved to ' + node.name + 'n' )&lt;br /&gt;
+        return False&lt;br /&gt;
+    return True&lt;br /&gt;
+</code></p>
+
+<p>然后，开始实验～把Mininet搭出来的拓扑拆掉～<br />
+执行语句infoall，查看所有host的信息：<br />
+<code class="highlighter-rouge">&lt;br /&gt;
+mininet&gt; infoall&lt;br /&gt;
+Print info for all hosts.&lt;br /&gt;
+mn: &lt;mininet.net.Mininet object at 0x8ce970c&gt;&lt;br /&gt;
+*** infoall: Print all the host info&lt;br /&gt;
+h2: IP=192.168.1.10 intfs=h2-eth0 pid=8328&lt;br /&gt;
+h3: IP=192.168.1.11 intfs=h3-eth0 pid=8329&lt;br /&gt;
+</code><br />
+然后在Mininet外查看进程信息<br />
+<code class="highlighter-rouge">&lt;br /&gt;
+fnl@fnl-OptiPlex-790:~$ ps -A | grep 832*&lt;br /&gt;
+  983 ?        00:00:00 dbus-daemon&lt;br /&gt;
+ 8321 pts/5    00:00:00 mn&lt;br /&gt;
+ 8327 ?        00:00:00 bash&lt;br /&gt;
+ 8328 ?        00:00:00 bash&lt;br /&gt;
+ 8329 ?        00:00:00 bash&lt;br /&gt;
+ 8330 ?        00:00:00 bash&lt;br /&gt;
+</code><br />
+如果kill掉bash进程，然后再执行infoall命令，则会报“OSError: [Errno 32] Broken pipe”错误。很明显，Mininet与bash进程之间的通信被打断了，但是ping还是通的（Node实例还在）。但是，如果把switch和host之间的veth连接断掉呢？执行下面语句，断掉网口的veth连接(因为是对称结构，所以方案只有一种：<strong>直接删掉交换机端虚拟网口</strong>…)</p>
+
+<blockquote>
+  <p>sudo ip link delete s1-eth1</p>
+</blockquote>
+
+<p>结果很明显，ping不通了。如果拿infoall命令看各个host的信息，就会发现虽然虚拟网口、pid还在，但是IP已经变成了None:<br />
+<code class="highlighter-rouge">&lt;br /&gt;
+mininet&gt; infoall&lt;br /&gt;
+Print info for all hosts.&lt;br /&gt;
+mn: &lt;mininet.net.Mininet object at 0x9c2770c&gt;&lt;br /&gt;
+*** infoall: Print all the host info&lt;br /&gt;
+h2: IP=10.0.0.2 intfs=h2-eth0 pid=20329&lt;br /&gt;
+h3: IP=None intfs=h3-eth0 pid=20330&lt;br /&gt;
+</code><br />
+到现在，模拟虚拟主机的做法已经比较清楚了。唯一剩下的问题就是：在不同namespace之间通信的mn类驶如何实现呢？这个留到下次写～<br />
+至于遇到的问题…很简单，把回环网卡打开，一切恢复初…【早怎么没想到呢？</p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

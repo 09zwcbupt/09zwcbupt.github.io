@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FloodLight模块加载过程</title>
+  <meta name="description" content="模块加载部分：">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2013/04/24/floodlight%e5%90%af%e5%8a%a8%e8%bf%87%e7%a8%8b/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">FloodLight模块加载过程</h1>
+    <p class="post-meta"><time datetime="2013-04-24T00:00:00-07:00" itemprop="datePublished">Apr 24, 2013</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>模块加载部分：</p>
+
+<blockquote>
+  <p>core/module/FloodlightModuleLoader.java  =&gt;  (396 – 403)</p>
+</blockquote>
+
+<p>loadModulesFromList函数<br />
+<code lang="java" width="600">&lt;br /&gt;
+for (IFloodlightModule module : moduleSet) {&lt;br /&gt;
+    // init the module&lt;br /&gt;
+    if (logger.isDebugEnabled()) {&lt;br /&gt;
+        logger.debug("Initializing " +  module.getClass().getCanonicalName());&lt;br /&gt;
+    }&lt;br /&gt;
+    module.init(floodlightModuleContext);&lt;br /&gt;
+}&lt;br /&gt;
+</code><br />
+循环加载启动列表中的模块。其中module.init(floodlightModuleContext);执行<br />
+<!--more--></p>
+
+<blockquote>
+  <p>core/module/IFloodlightModule.java =&gt; (77 – 88)</p>
+</blockquote>
+
+<p>Interface，转换到模块override的init函数。<br />
+<code lang="java" width="600">&lt;br /&gt;
+void init(FloodlightModuleContext context) throws FloodlightModuleException;&lt;/p&gt;
+&lt;p&gt;/**&lt;br /&gt;
+ * This is a hook for each module to do its &lt;em&gt;external&lt;/em&gt; initializations,&lt;br /&gt;
+ * e.g., register for callbacks or query for state in other modules&lt;br /&gt;
+ *&lt;br /&gt;
+ * It is expected that this function will not block and that modules that want&lt;br /&gt;
+ * non-event driven CPU will spawn their own threads.&lt;br /&gt;
+ *&lt;br /&gt;
+ * @param context&lt;br /&gt;
+ * @throws FloodlightModuleException&lt;br /&gt;
+ */&lt;br /&gt;
+</code></p>
+
+<p>随后执行初始化完成的组件中的startUp函数。对于如下的事件绑定代码<br />
+<code lang="java" width="600">&lt;br /&gt;
+floodlightProvider.addOFMessageListener(OFType.PACKET_IN, this);&lt;br /&gt;
+</code></p>
+
+<blockquote>
+  <p>core/internal/Controller.java ==&gt; (1451 – 1460)</p>
+</blockquote>
+
+<p><code lang="java" width="600">&lt;br /&gt;
+//line 149 声明messageListeners实例&lt;br /&gt;
+protected ConcurrentMap&lt;oftype,
+                        ListenerDispatcher&lt;oftype,IOFMessageListener&gt;&gt;&lt;br /&gt;
+                            messageListeners;&lt;br /&gt;
+//line 1446&lt;br /&gt;
+// ***************&lt;br /&gt;
+// IFloodlightProvider&lt;br /&gt;
+// ***************&lt;/p&gt;
+&lt;p&gt;@Override&lt;br /&gt;
+public synchronized void addOFMessageListener(OFType type,&lt;br /&gt;
+                                              IOFMessageListener listener) {&lt;br /&gt;
+    ListenerDispatcher&lt;oftype, IOFMessageListener&gt; ldd =&lt;br /&gt;
+        messageListeners.get(type); //从messageListeners中获取tpye事件的监听列表&lt;br /&gt;
+    if (ldd == null) {     //先检测对应事件列表ldd是否为空&lt;br /&gt;
+        ldd = new ListenerDispatcher&lt;oftype, IOFMessageListener&gt;();&lt;br /&gt;
+        messageListeners.put(type, ldd);&lt;br /&gt;
+    }&lt;br /&gt;
+    ldd.addListener(type, listener);&lt;br /&gt;
+}&lt;br /&gt;
+</code><br />
+其中，ldd是事件注册列表（具体属性：listeners ArrayList<e> (id=187)）。ListenerDispatcher类的具体定义位置是core/util/ListenerDispatcher.java。Debug中，PacketIn事件的监听模块默认为：</e></p>
+
+<p><code class="highlighter-rouge">&lt;br /&gt;
+elementData     Object[10]  (id=189)&lt;br /&gt;
+        [0]     LinkDiscoveryManager  (id=193)&lt;br /&gt;
+        [1]     TopologyManager  (id=200)&lt;br /&gt;
+        [2]     DeviceManagerImpl  (id=207)&lt;br /&gt;
+        [3]     Firewall  (id=213)&lt;br /&gt;
+        [4]     LoadBalancer  (id=66)&lt;br /&gt;
+        [5]     Forwarding  (id=218)&lt;br /&gt;
+        [6]     null&lt;br /&gt;
+        ...&lt;br /&gt;
+</code><br />
+事件加入函数</p>
+
+<blockquote>
+  <p>core/util/ListenerDispatcher.java ==&gt; (71 – 107)</p>
+</blockquote>
+
+<p><code lang="java" width="600">&lt;br /&gt;
+//line 38&lt;br /&gt;
+List&lt;t&gt; listeners = null;&lt;/p&gt;
+&lt;p&gt;//line 71&lt;br /&gt;
+public void addListener(U type, T listener) {&lt;br /&gt;
+    List&lt;t&gt; newlisteners = new ArrayList&lt;t&gt;();&lt;br /&gt;
+    if (listeners != null) //listeners列表是否为空(当前监听者列表)&lt;br /&gt;
+        newlisteners.addAll(listeners);//将原列表中信息复制进来&lt;/p&gt;
+&lt;p&gt;    newlisteners.add(listener);&lt;br /&gt;
+    // Find nodes without outgoing edges&lt;br /&gt;
+    List&lt;t&gt; terminals = new ArrayList&lt;t&gt;();&lt;br /&gt;
+    for (T i : newlisteners) {&lt;br /&gt;
+        boolean isterm = true;&lt;br /&gt;
+        for (T j : newlisteners) {&lt;br /&gt;
+            if (ispre(type, i, j)) {&lt;br /&gt;
+                isterm = false;&lt;br /&gt;
+                break;&lt;br /&gt;
+            }&lt;br /&gt;
+        }&lt;br /&gt;
+        if (isterm) {&lt;br /&gt;
+            terminals.add(i);&lt;br /&gt;
+        }&lt;br /&gt;
+    }&lt;/p&gt;
+&lt;p&gt;    if (terminals.size() == 0) {&lt;br /&gt;
+        logger.error("No listener dependency solution: " +&lt;br /&gt;
+        		     "No listeners without incoming dependencies");&lt;br /&gt;
+        listeners = newlisteners;&lt;br /&gt;
+        return;&lt;br /&gt;
+    }&lt;/p&gt;
+&lt;p&gt;    // visit depth-first traversing in the opposite order from&lt;br /&gt;
+    // the dependencies.  Note we will not generally detect cycles&lt;br /&gt;
+    HashSet&lt;t&gt; visited = new HashSet&lt;t&gt;();&lt;br /&gt;
+    List&lt;t&gt; ordering = new ArrayList&lt;t&gt;();&lt;br /&gt;
+    for (T term : terminals) {&lt;br /&gt;
+        visit(newlisteners, type, visited, ordering, term);&lt;br /&gt;
+    }&lt;br /&gt;
+    listeners = ordering;&lt;br /&gt;
+}&lt;br /&gt;
+</code></p>
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

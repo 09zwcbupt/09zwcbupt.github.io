@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description>Working on Network &amp;amp; SDN</description>
+    <link>http://richardzhao.me/</link>
+    <atom:link href="http://richardzhao.me/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 01 Jan 2016 18:17:49 -0800</pubDate>
+    <lastBuildDate>Fri, 01 Jan 2016 18:17:49 -0800</lastBuildDate>
+    <generator>Jekyll v3.0.1</generator>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 01 Jan 2016 18:00:56 -0800</pubDate>
+        <link>http://richardzhao.me/jekyll/update/2016/01/01/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://richardzhao.me/jekyll/update/2016/01/01/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>Analysis of Open vSwitch Kernel Module Datapath</title>
+        <description>
+</description>
+        <pubDate>Thu, 09 Oct 2014 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2014/10/09/analysis-of-open-vswitch-kernel-module-datapath/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2014/10/09/analysis-of-open-vswitch-kernel-module-datapath/</guid>
+        
+        
+        <category>代码</category>
+        
+      </item>
+    
+      <item>
+        <title>Intern @ ARISTA NETWORKS</title>
+        <description>&lt;!--:zh--&gt;
+&lt;p&gt;壹&lt;/p&gt;
+
+&lt;p&gt;听之前在这边实习过的学长说，Arista主要用Python和C。后来面试的时候，面试官轻描淡写的说，我们用C++；不会没关系，过来之后学就好了。才问了两个人，口径就不一致了…&lt;/p&gt;
+
+&lt;p&gt;等到入职之后才发现，公司虽说在用，但C++代码只是临时文件一样的地位。程序猿们手写/面对的是更上层的语言（TACC），每次动手也只需要修改Entity之间的逻辑关系。每当编译的时候，TACC代码就会通过编译器生成C++中对应的各种类以及类中的接口函数。这么做一个明显的好处是，搭建系统的时候速度会非常快。举个例子，入职培训中有一个简单的教程，是关于怎么写一个系统插件。按照这个教程写下来，TACC代码大概是50行，但是编译到C++后，代码变到了2000行以上…&lt;/p&gt;
+
+&lt;p&gt;关于TACC，有一个介绍文档：&lt;/p&gt;
+
+&lt;div style=&quot;margin-bottom: 5px;&quot;&gt;
+  &lt;strong&gt; &lt;a title=&quot;SDEC2011 Going by TACC&quot; href=&quot;https://www.slideshare.net/sdec2011/sdec2011-going-by-tacc&quot; target=&quot;_blank&quot;&gt;SDEC2011 Going by TACC&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&quot;http://www.slideshare.net/sdec2011&quot; target=&quot;_blank&quot;&gt;Korea Sdec&lt;/a&gt;&lt;/strong&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;margin-bottom: 5px;&quot;&gt;
+&lt;/div&gt;
+
+&lt;p&gt;顺便八一卦，这个TACC是另一个公司(OptumSoft)的产品。这个公司是和Arista一起成长起来的，不仅员工在两个公司创立之初时一起工作，就连OptumSoft的创始人David Cheriton也是Arista的创始人之一。此外，Arista还是TACC唯一的用户。这些看起来都很美好，然后事情就变得狗血起来… Arista的发展非常成功，公司规模逐渐扩大，也搬进了现在所在的大楼，外加准备上市；但是OptumSoft却没那么顺利，被认为会是一个失败的创业项目。不知道David Cheriton是中了什么邪，就在Arista准备上市+自己将会是最大的持股人的时候讲其告上法庭，并且企图获得TACC的改进，乃至通过TACC生成的软件（包括Arista Switch的操作系统）的所有权。业内人士纷纷表示呵呵，很多人都认为这种奇葩的做法只是为了挽救OptumSoft。好在Arista在我入职后的第一个周五成功上市。&lt;/p&gt;
+
+&lt;p&gt;贰 – BPF&lt;/p&gt;
+
+&lt;p&gt;第一个项目很简单，作为练手+熟悉系统。第二个就复杂些。其中一个环节是加入BPF。没什么好写的，直接上参考链接:&lt;/p&gt;
+
+&lt;div style=&quot;margin-bottom: 5px;&quot;&gt;
+  &lt;ol&gt;
+    &lt;li&gt;
+      McCanne, Steven; Jacobson, Van (1992-12-19). &amp;#8220;&lt;a title=&quot;McCanne, Steven; Jacobson, Van (1992-12-19). &quot; href=&quot;http://www.tcpdump.org/papers/bpf-usenix93.pdf&quot; target=&quot;_blank&quot;&gt;The BSD Packet Filter: A New Architecture for User-level Packet Capture&lt;/a&gt;&amp;#8220;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a title=&quot;Berkeley Packet Filters – The Basics Jeff Stebelton&quot; href=&quot;http://www.infosecwriters.com/text_resources/pdf/JStebelton_BPF.pdf&quot; target=&quot;_blank&quot;&gt;Berkeley Packet Filters – The BasicsJeff Stebelton&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      [kernel doc]&lt;a title=&quot;Linux Socket Filtering aka Berkeley Packet Filter (BPF)&quot; href=&quot;https://www.kernel.org/doc/Documentation/networking/filter.txt&quot; target=&quot;_blank&quot;&gt;Linux Socket Filtering aka Berkeley Packet Filter (BPF)&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      [FreeBSD man 4]&lt;a title=&quot;Berkeley Packet Filter&quot; href=&quot;http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;amp;sektion=4&amp;amp;apropos=0&amp;amp;manpath=FreeBSD+10.0-RELEASE&quot; target=&quot;_blank&quot;&gt;Berkeley Packet Filter&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      [FreeBSD man 9]&lt;a title=&quot;Berkeley Packet Filter&quot; href=&quot;http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;amp;sektion=9&amp;amp;apropos=0&amp;amp;manpath=FreeBSD+10.0-RELEASE&quot; target=&quot;_blank&quot;&gt;Berkeley Packet Filter&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a title=&quot;Programming with pcap&quot; href=&quot;http://www.tcpdump.org/pcap.html&quot; target=&quot;_blank&quot;&gt;Programming with pcap&lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+&lt;p&gt;ENG:&lt;/p&gt;
+
+&lt;!--:--&gt;
+
+&lt;!--:en--&gt;
+&lt;p&gt;1&lt;/p&gt;
+
+&lt;div style=&quot;margin-bottom: 5px;&quot;&gt;
+  &lt;strong&gt; &lt;a title=&quot;SDEC2011 Going by TACC&quot; href=&quot;https://www.slideshare.net/sdec2011/sdec2011-going-by-tacc&quot; target=&quot;_blank&quot;&gt;SDEC2011 Going by TACC&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href=&quot;http://www.slideshare.net/sdec2011&quot; target=&quot;_blank&quot;&gt;Korea Sdec&lt;/a&gt;&lt;/strong&gt;
+&lt;/div&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;2&lt;/p&gt;
+
+&lt;p&gt;As part of project 2 is related to BPF, I am learning BPF and searching for tutorials. The kernel document seems to be good learning material, however the example program is not runnable. So, I wrote a &lt;a title=&quot;socket filter&quot; href=&quot;https://github.com/09zwcbupt/personal/blob/master/bpf/sock_filter.c&quot; target=&quot;_blank&quot;&gt;version&lt;/a&gt; based on it (using socket filter in linux), and also &lt;a title=&quot;pcap bpf&quot; href=&quot;https://github.com/09zwcbupt/personal/blob/master/bpf/pcap_bpf.c&quot; target=&quot;_blank&quot;&gt;another version&lt;/a&gt; using functions in libpcap to generate rules and filter packets.&lt;/p&gt;
+
+&lt;p&gt;Basically, BPF is used on raw sockets to filter out traffic that is not interesting. But it turns out that the filter also works with datagram socket (UDP socket). According to &lt;a title=&quot;Using BPF with SOCK_DGRAM on Linux machine&quot; href=&quot;http://stackoverflow.com/questions/24514333/using-bpf-with-sock-dgram-on-linux-machine&quot; target=&quot;_blank&quot;&gt;Using BPF with SOCK_DGRAM on Linux machine&lt;/a&gt;, as the compiled filter works on bytes that is received from sockets, plus the UDP socket can see from the UDP layer of the packet, the meaning of `ldb 0` is changed from reading the first byte of destination MAC address to reading the first byte of the source port. This change means I’ll have trouble if I am using libpcap generated filter code on a UDP socket. And to solve that, either change the rule in to some meaning less combination (like “udp[8] == 0x00″ -&amp;gt; “ether[8] == 0x00″), or try to adjust generated code to load proper byte of the received packet.&lt;/p&gt;
+
+&lt;p&gt;Reference:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;McCanne, Steven; Jacobson, Van (1992-12-19). “&lt;a title=&quot;McCanne, Steven; Jacobson, Van (1992-12-19). &quot; href=&quot;http://www.tcpdump.org/papers/bpf-usenix93.pdf&quot; target=&quot;_blank&quot;&gt;The BSD Packet Filter: A New Architecture for User-level Packet Capture&lt;/a&gt;“&lt;/li&gt;
+  &lt;li&gt;&lt;a title=&quot;Berkeley Packet Filters – The Basics Jeff Stebelton&quot; href=&quot;http://www.infosecwriters.com/text_resources/pdf/JStebelton_BPF.pdf&quot; target=&quot;_blank&quot;&gt;Berkeley Packet Filters – The BasicsJeff Stebelton&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[kernel doc]&lt;a title=&quot;Linux Socket Filtering aka Berkeley Packet Filter (BPF)&quot; href=&quot;https://www.kernel.org/doc/Documentation/networking/filter.txt&quot; target=&quot;_blank&quot;&gt;Linux Socket Filtering aka Berkeley Packet Filter (BPF)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[FreeBSD man 4]&lt;a title=&quot;Berkeley Packet Filter&quot; href=&quot;http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;amp;sektion=4&amp;amp;apropos=0&amp;amp;manpath=FreeBSD+10.0-RELEASE&quot; target=&quot;_blank&quot;&gt;Berkeley Packet Filter&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[FreeBSD man 9]&lt;a title=&quot;Berkeley Packet Filter&quot; href=&quot;http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;amp;sektion=9&amp;amp;apropos=0&amp;amp;manpath=FreeBSD+10.0-RELEASE&quot; target=&quot;_blank&quot;&gt;Berkeley Packet Filter&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a title=&quot;Programming with pcap&quot; href=&quot;http://www.tcpdump.org/pcap.html&quot; target=&quot;_blank&quot;&gt;Programming with pcap&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--:--&gt;
+</description>
+        <pubDate>Wed, 18 Jun 2014 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2014/06/18/intern-life-arista-networks/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2014/06/18/intern-life-arista-networks/</guid>
+        
+        
+        <category>Uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>Hello world&amp;#8230;</title>
+        <description>&lt;p&gt;换回到LA的VPS了… 排版和图片还有些问题。网站现在的内容基于3月27号的备份。&lt;/p&gt;
+
+&lt;p&gt;[吐槽]思科满满的恶意啊: &lt;a title=&quot;Cisco Offers OpFlex as OpenFlow Alternative&quot; href=&quot;http://tools.ietf.org/html/draft-smith-opflex-00&quot; target=&quot;_blank&quot;&gt;http://tools.ietf.org/html/draft-smith-opflex-00&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 07 Apr 2014 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2014/04/07/hello-world-3/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2014/04/07/hello-world-3/</guid>
+        
+        
+        <category>Uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>主机连接状态实时监测[毕设DEMO]</title>
+        <description>&lt;p&gt;下面这段视频呢，是我本科毕设的DEMO。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;演示环境为：&lt;/strong&gt; Mininet + POX + POXDesk&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;网络拓扑：&lt;/strong&gt;树状拓扑，三台OVS交换机+四台主机。其中，Switch 5为根路由器，Switch 6和Switch 7为边缘路由；host 1为DHCP服务器。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;实际系统功能：&lt;/strong&gt;当主机通过DHCP协议获得IP地址后被认为进入网络（默认三层通信），POXDesk的拓扑显示中实时添加主机以及链接相关信息。当主机断开与交换机连接/释放IP（DHCP Release）时，POXDesk的拓扑显示中实时删除主机及链接相关信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;源码：&lt;/strong&gt;POX和POXDesk的代码可以在&lt;a title=&quot;项目地址&quot; href=&quot;https://github.com/09zwcbupt/undergrad_thesis&quot; target=&quot;_blank&quot;&gt;github&lt;/a&gt;上找到。另外，POX以及POXDesk的启动方法可以在项目README里面找到。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 31 May 2013 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2013/05/31/%e4%b8%bb%e6%9c%ba%e8%bf%9e%e6%8e%a5%e7%8a%b6%e6%80%81%e5%ae%9e%e6%97%b6%e7%9b%91%e6%b5%8b%e6%af%95%e8%ae%bedemo/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2013/05/31/%e4%b8%bb%e6%9c%ba%e8%bf%9e%e6%8e%a5%e7%8a%b6%e6%80%81%e5%ae%9e%e6%97%b6%e7%9b%91%e6%b5%8b%e6%af%95%e8%ae%bedemo/</guid>
+        
+        
+        <category>代码</category>
+        
+      </item>
+    
+      <item>
+        <title>a test for jslinux</title>
+        <description>&lt;p&gt;User: root&lt;br /&gt;
+Useful links:&lt;br /&gt;
+&lt;a title=&quot;How does bellard.org/jslinux work?&quot; href=&quot;http://www.quora.com/Emulators-computing/How-does-bellard-org-jslinux-work&quot; target=&quot;_blank&quot;&gt;How does bellard.org/jslinux work?&lt;/a&gt;&lt;br /&gt;
+&lt;a title=&quot;Javascript PC Emulator - Technical Notes&quot; href=&quot;http://bellard.org/jslinux/tech.html&quot; target=&quot;_blank&quot;&gt;Javascript PC Emulator – Technical Notes&lt;/a&gt;&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;Thanks to: &lt;strong&gt;https://github.com/ewiger/jsmodem&lt;/strong&gt;  &lt;em&gt;and&lt;/em&gt;  &lt;strong&gt;http://bellard.org/jslinux/&lt;/strong&gt;&lt;br /&gt;
+some &lt;a title=&quot;useful talks&quot; href=&quot;https://groups.google.com/forum/m/?fromgroups#!topic/hackerfellowship/SOs1t2y5HHw&quot; target=&quot;_blank&quot;&gt;useful talks&lt;/a&gt; on this topic&lt;br /&gt;
+videos on jslinux/jsmodem:&lt;br /&gt;
+part1: &lt;a title=&quot;JSModem for JSLinux - Part1&quot; href=&quot;http://www.youtube.com/watch?v=MEsmgHrKQYM&quot; target=&quot;_blank&quot;&gt;Demo&lt;/a&gt;&lt;br /&gt;
+part2: &lt;a title=&quot;JSModem for JSLinux - Part2&quot; href=&quot;http://www.youtube.com/watch?v=IyvrYYuV3TI&quot; target=&quot;_blank&quot;&gt;Brief intro&lt;/a&gt;&lt;br /&gt;
+part3: &lt;a title=&quot;JSModem for JSLinux - Part3&quot; href=&quot;http://www.youtube.com/watch?v=KPfYsRX8h00&quot; target=&quot;_blank&quot;&gt;Loading, New device &amp;amp; IO&lt;/a&gt;&lt;br /&gt;
+part4: &lt;a title=&quot;JSModem for JSLinux - Part4&quot; href=&quot;http://www.youtube.com/watch?v=lc9a2wH5p9Y&quot; target=&quot;_blank&quot;&gt;Modem code overview&lt;/a&gt;&lt;br /&gt;
+part5: &lt;a title=&quot;JSModem for JSLinux - Part5&quot; href=&quot;http://www.youtube.com/watch?v=79xLwAXNYB8&quot; target=&quot;_blank&quot;&gt;Speculation on virtualization&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Also some other js based linux emulators:&lt;br /&gt;
+&lt;a title=&quot;http://bellard.org/jslinux/&quot; href=&quot;http://bellard.org/jslinux/&quot; target=&quot;_blank&quot;&gt;http://bellard.org/jslinux/&lt;/a&gt; (the original one)&lt;br /&gt;
+&lt;a title=&quot;http://www.ubercomp.com/jslm32/src/&quot; href=&quot;http://www.ubercomp.com/jslm32/src/&quot; target=&quot;_blank&quot;&gt;http://www.ubercomp.com/jslm32/src/&lt;/a&gt;&lt;br /&gt;
+&lt;a title=&quot;not a demo, but jslinux on Node.js&quot; href=&quot;https://github.com/tlrobinson/node-jslinux&quot; target=&quot;_blank&quot;&gt;https://github.com/tlrobinson/node-jslinux&lt;/a&gt;&lt;br /&gt;
+&lt;a title=&quot;https://github.com/ewiger/jsmodem&quot; href=&quot;https://github.com/ewiger/jsmodem&quot; target=&quot;_blank&quot;&gt;https://github.com/ewiger/jsmodem&lt;/a&gt; (What I used for this page)&lt;/p&gt;
+
+&lt;p&gt;From http://yauhen.yakimovich.info/blog/2011/05/18/age-of-web-wonders/&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Building JS emulators of processing units is not new. For instance, &lt;a title=&quot;JNSES&quot; href=&quot;http://benfirshman.com/projects/jsnes/&quot; target=&quot;_blank&quot;&gt;JSNES&lt;/a&gt; emulates Nintendo gaming console allowing to run ROMs of old games as tetris (by Alexey Pazhitnov), contra, donkey kong, etc. Similar (x86) emulators were also developed in pure Java, e.g. &lt;a title=&quot;JPC&quot; href=&quot;http://jpc.sourceforge.net/home_home.html&quot; target=&quot;_blank&quot;&gt;JPC&lt;/a&gt;.&lt;/p&gt;
+
+  &lt;p&gt;Another remarkable &lt;a title=&quot;JS Simulator&quot; href=&quot;http://www.visual6502.org/JSSim/index.html&quot; target=&quot;_blank&quot;&gt;JS simulator&lt;/a&gt; of &lt;a title=&quot;MOS 6502&quot; href=&quot;http://en.wikipedia.org/wiki/MOS_Technology_6502&quot; target=&quot;_blank&quot;&gt;MOS 6502&lt;/a&gt; 8-bit processor (both NES and Terminator’s chip) allows to visualize the computational state of the unit. This time authors have taken their time to actually digitalize the full image of the chip, instead of just approximating the computation results or following available VHDL-like semantics. As the result one can see how program runs inside the “X-rayed” chip.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Fri, 10 May 2013 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2013/05/10/a-test-for-jslinux/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2013/05/10/a-test-for-jslinux/</guid>
+        
+        
+        <category>技术</category>
+        
+      </item>
+    
+      <item>
+        <title>米国实验室与量子网络</title>
+        <description>&lt;p&gt;文章来源：&lt;a href=&quot;http://jandan.net/2013/05/07/quantum-internet.html&quot; title=&quot;美国某实验室承认使用量子网络已经两年多&quot; target=&quot;_blank&quot;&gt;煎蛋&lt;/a&gt; &lt;a href=&quot;http://gizmodo.com/government-lab-admits-to-using-quantum-internet-for-two-493293340&quot; title=&quot;Government Lab Admits to Using Quantum Internet for Two Years&quot; target=&quot;_blank&quot;&gt;GIZMODO&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://img.gawkerassets.com/img/18mx3kf5bcdpzjpg/k-bigpic.jpg&quot; alt=&quot;Government Lab Admits to Using Quantum Internet for Two Years&quot; /&gt;&lt;br /&gt;
+美国洛斯阿拉莫斯国家实验室的一个小组今天低调地耸耸肩，承认他们使用量子网络已至少两年了。&lt;br /&gt;
+具体情况，移步&lt;a href=&quot;http://arxiv.org/abs/1305.0305&quot; title=&quot;Network-Centric Quantum Communications with Application to Critical Infrastructure Protection&quot; target=&quot;_blank&quot;&gt;arxiv&lt;/a&gt;，那里有论文&lt;a href=&quot;http://arxiv.org/pdf/1305.0305v1.pdf&quot; title=&quot;Network-Centric Quantum Communications with Application to Critical  Infrastructure Protection&quot; target=&quot;_blank&quot;&gt;预印本&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;参考链接：&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E5%85%A8%E9%80%9A%E5%9E%8B%E9%87%8F%E5%AD%90%E9%80%9A%E4%BF%A1%E7%BD%91&quot; title=&quot;全通型量子通信网&quot; target=&quot;_blank&quot;&gt;wikipedia－zh on 全通型量子通信网&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 07 May 2013 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2013/05/07/%e7%b1%b3%e5%9b%bd%e5%ae%9e%e9%aa%8c%e5%ae%a4%e4%b8%8e%e9%87%8f%e5%ad%90%e7%bd%91%e7%bb%9c/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2013/05/07/%e7%b1%b3%e5%9b%bd%e5%ae%9e%e9%aa%8c%e5%ae%a4%e4%b8%8e%e9%87%8f%e5%ad%90%e7%bd%91%e7%bb%9c/</guid>
+        
+        
+        <category>新闻</category>
+        
+      </item>
+    
+      <item>
+        <title>FloodLight模块加载过程</title>
+        <description>&lt;p&gt;模块加载部分：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;core/module/FloodlightModuleLoader.java  =&amp;gt;  (396 – 403)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;loadModulesFromList函数&lt;br /&gt;
+&lt;code lang=&quot;java&quot; width=&quot;600&quot;&gt;&amp;lt;br /&amp;gt;
+for (IFloodlightModule module : moduleSet) {&amp;lt;br /&amp;gt;
+    // init the module&amp;lt;br /&amp;gt;
+    if (logger.isDebugEnabled()) {&amp;lt;br /&amp;gt;
+        logger.debug(&quot;Initializing &quot; +  module.getClass().getCanonicalName());&amp;lt;br /&amp;gt;
+    }&amp;lt;br /&amp;gt;
+    module.init(floodlightModuleContext);&amp;lt;br /&amp;gt;
+}&amp;lt;br /&amp;gt;
+&lt;/code&gt;&lt;br /&gt;
+循环加载启动列表中的模块。其中module.init(floodlightModuleContext);执行&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;core/module/IFloodlightModule.java =&amp;gt; (77 – 88)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Interface，转换到模块override的init函数。&lt;br /&gt;
+&lt;code lang=&quot;java&quot; width=&quot;600&quot;&gt;&amp;lt;br /&amp;gt;
+void init(FloodlightModuleContext context) throws FloodlightModuleException;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;/**&amp;lt;br /&amp;gt;
+ * This is a hook for each module to do its &amp;lt;em&amp;gt;external&amp;lt;/em&amp;gt; initializations,&amp;lt;br /&amp;gt;
+ * e.g., register for callbacks or query for state in other modules&amp;lt;br /&amp;gt;
+ *&amp;lt;br /&amp;gt;
+ * It is expected that this function will not block and that modules that want&amp;lt;br /&amp;gt;
+ * non-event driven CPU will spawn their own threads.&amp;lt;br /&amp;gt;
+ *&amp;lt;br /&amp;gt;
+ * @param context&amp;lt;br /&amp;gt;
+ * @throws FloodlightModuleException&amp;lt;br /&amp;gt;
+ */&amp;lt;br /&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;随后执行初始化完成的组件中的startUp函数。对于如下的事件绑定代码&lt;br /&gt;
+&lt;code lang=&quot;java&quot; width=&quot;600&quot;&gt;&amp;lt;br /&amp;gt;
+floodlightProvider.addOFMessageListener(OFType.PACKET_IN, this);&amp;lt;br /&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;core/internal/Controller.java ==&amp;gt; (1451 – 1460)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code lang=&quot;java&quot; width=&quot;600&quot;&gt;&amp;lt;br /&amp;gt;
+//line 149 声明messageListeners实例&amp;lt;br /&amp;gt;
+protected ConcurrentMap&amp;lt;oftype,
+                        ListenerDispatcher&amp;lt;oftype,IOFMessageListener&amp;gt;&amp;gt;&amp;lt;br /&amp;gt;
+                            messageListeners;&amp;lt;br /&amp;gt;
+//line 1446&amp;lt;br /&amp;gt;
+// ***************&amp;lt;br /&amp;gt;
+// IFloodlightProvider&amp;lt;br /&amp;gt;
+// ***************&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;@Override&amp;lt;br /&amp;gt;
+public synchronized void addOFMessageListener(OFType type,&amp;lt;br /&amp;gt;
+                                              IOFMessageListener listener) {&amp;lt;br /&amp;gt;
+    ListenerDispatcher&amp;lt;oftype, IOFMessageListener&amp;gt; ldd =&amp;lt;br /&amp;gt;
+        messageListeners.get(type); //从messageListeners中获取tpye事件的监听列表&amp;lt;br /&amp;gt;
+    if (ldd == null) {     //先检测对应事件列表ldd是否为空&amp;lt;br /&amp;gt;
+        ldd = new ListenerDispatcher&amp;lt;oftype, IOFMessageListener&amp;gt;();&amp;lt;br /&amp;gt;
+        messageListeners.put(type, ldd);&amp;lt;br /&amp;gt;
+    }&amp;lt;br /&amp;gt;
+    ldd.addListener(type, listener);&amp;lt;br /&amp;gt;
+}&amp;lt;br /&amp;gt;
+&lt;/code&gt;&lt;br /&gt;
+其中，ldd是事件注册列表（具体属性：listeners ArrayList&lt;e&gt; (id=187)）。ListenerDispatcher类的具体定义位置是core/util/ListenerDispatcher.java。Debug中，PacketIn事件的监听模块默认为：&lt;/e&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;br /&amp;gt;
+elementData     Object[10]  (id=189)&amp;lt;br /&amp;gt;
+        [0]     LinkDiscoveryManager  (id=193)&amp;lt;br /&amp;gt;
+        [1]     TopologyManager  (id=200)&amp;lt;br /&amp;gt;
+        [2]     DeviceManagerImpl  (id=207)&amp;lt;br /&amp;gt;
+        [3]     Firewall  (id=213)&amp;lt;br /&amp;gt;
+        [4]     LoadBalancer  (id=66)&amp;lt;br /&amp;gt;
+        [5]     Forwarding  (id=218)&amp;lt;br /&amp;gt;
+        [6]     null&amp;lt;br /&amp;gt;
+        ...&amp;lt;br /&amp;gt;
+&lt;/code&gt;&lt;br /&gt;
+事件加入函数&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;core/util/ListenerDispatcher.java ==&amp;gt; (71 – 107)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code lang=&quot;java&quot; width=&quot;600&quot;&gt;&amp;lt;br /&amp;gt;
+//line 38&amp;lt;br /&amp;gt;
+List&amp;lt;t&amp;gt; listeners = null;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;//line 71&amp;lt;br /&amp;gt;
+public void addListener(U type, T listener) {&amp;lt;br /&amp;gt;
+    List&amp;lt;t&amp;gt; newlisteners = new ArrayList&amp;lt;t&amp;gt;();&amp;lt;br /&amp;gt;
+    if (listeners != null) //listeners列表是否为空(当前监听者列表)&amp;lt;br /&amp;gt;
+        newlisteners.addAll(listeners);//将原列表中信息复制进来&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;    newlisteners.add(listener);&amp;lt;br /&amp;gt;
+    // Find nodes without outgoing edges&amp;lt;br /&amp;gt;
+    List&amp;lt;t&amp;gt; terminals = new ArrayList&amp;lt;t&amp;gt;();&amp;lt;br /&amp;gt;
+    for (T i : newlisteners) {&amp;lt;br /&amp;gt;
+        boolean isterm = true;&amp;lt;br /&amp;gt;
+        for (T j : newlisteners) {&amp;lt;br /&amp;gt;
+            if (ispre(type, i, j)) {&amp;lt;br /&amp;gt;
+                isterm = false;&amp;lt;br /&amp;gt;
+                break;&amp;lt;br /&amp;gt;
+            }&amp;lt;br /&amp;gt;
+        }&amp;lt;br /&amp;gt;
+        if (isterm) {&amp;lt;br /&amp;gt;
+            terminals.add(i);&amp;lt;br /&amp;gt;
+        }&amp;lt;br /&amp;gt;
+    }&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;    if (terminals.size() == 0) {&amp;lt;br /&amp;gt;
+        logger.error(&quot;No listener dependency solution: &quot; +&amp;lt;br /&amp;gt;
+        		     &quot;No listeners without incoming dependencies&quot;);&amp;lt;br /&amp;gt;
+        listeners = newlisteners;&amp;lt;br /&amp;gt;
+        return;&amp;lt;br /&amp;gt;
+    }&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;    // visit depth-first traversing in the opposite order from&amp;lt;br /&amp;gt;
+    // the dependencies.  Note we will not generally detect cycles&amp;lt;br /&amp;gt;
+    HashSet&amp;lt;t&amp;gt; visited = new HashSet&amp;lt;t&amp;gt;();&amp;lt;br /&amp;gt;
+    List&amp;lt;t&amp;gt; ordering = new ArrayList&amp;lt;t&amp;gt;();&amp;lt;br /&amp;gt;
+    for (T term : terminals) {&amp;lt;br /&amp;gt;
+        visit(newlisteners, type, visited, ordering, term);&amp;lt;br /&amp;gt;
+    }&amp;lt;br /&amp;gt;
+    listeners = ordering;&amp;lt;br /&amp;gt;
+}&amp;lt;br /&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 24 Apr 2013 00:00:00 -0700</pubDate>
+        <link>http://richardzhao.me/2013/04/24/floodlight%e5%90%af%e5%8a%a8%e8%bf%87%e7%a8%8b/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2013/04/24/floodlight%e5%90%af%e5%8a%a8%e8%bf%87%e7%a8%8b/</guid>
+        
+        
+        <category>代码</category>
+        
+      </item>
+    
+      <item>
+        <title>有关 OpenFlow/SDN 的小总结</title>
+        <description>&lt;p&gt;从去年5月份开始接触OpenFlow/SDN，到现在已经折腾了一年多。期间看了很多材料，读了很多文章，也听了很多分析。正好最近需要整理一下思路，于是把能想到的东西按条目列了出来。大神路过拍砖的话麻烦轻点~&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1、SDN 是什么？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  a) 用middlebox 的角度，就是将转发，连带其他所有功能的配置/信息通完全过软件控制/定义/配置（UWM）&lt;br /&gt; b) 从系统架构的角度，给出系统抽象，形成累X86 架构的系统结构（Nick）&lt;br /&gt; c) 从网络的角度，是数据、控制平面分离&lt;br /&gt; d) 从云/数据中心的角度，是终于能够虚拟化一切的快感（OpenStack-Quantum, VMware-vSphere,优化Hadoop-IBM&amp;amp;Rice）&lt;br /&gt; e) 从网络设备提供商的角度，是设备白菜化，是Google 等开源节流省钱的优先选择&lt;br /&gt; f) 从网络运营商的角度，是今后省钱，省屌丝的利器
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2、OpenFlow 是什么？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  a) 是软件定义网络的一种实现方式&lt;br /&gt; b) 是交换机与控制器信息交互的一种协议&lt;br /&gt; c) 特点是流控制&lt;br /&gt; d) 缺少管理能力（参考SNMP）
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. ODL Proposal &lt;a title=&quot;SNMP4SDN&quot; href=&quot;https://wiki.opendaylight.org/view/Project_Proposals:SNMP4SDN&quot;&gt;SNMP4SDN&lt;/a&gt;&lt;br /&gt; ii. ONF有这方面的考虑，也提出了管理协议，只是目前已知的控制器都没有implementation。&lt;br /&gt; iii. 目前的辅助管理协议有：&lt;a title=&quot;The Open vSwitch Database Management Protocol&quot; href=&quot;http://tools.ietf.org/html/rfc7047&quot; target=&quot;_blank&quot;&gt;The Open vSwitch Database Management Protocol&lt;/a&gt;，&lt;a title=&quot;OpenFlow Configuration and Management Protocol&quot; href=&quot;https://www.opennetworking.org/sdn-resources/onf-specifications/openflow-config&quot; target=&quot;_blank&quot;&gt;OpenFlow Configuration and Management Protocol&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3、OpenFlow/SDN 的应用？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  a) 简化网络配置难度（目前主要是在DCN 中）&lt;br /&gt; b) 简化网络管理难度（也是在DCN 中）
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. UCSD的&lt;a title=&quot;Hedera: Dynamic Flow Scheduling for Data Center Networks&quot; href=&quot;http://static.usenix.org/event/nsdi10/tech/full_papers/al-fares.pdf&quot; target=&quot;_blank&quot;&gt;Hedera&lt;/a&gt;，动态流控制&lt;br /&gt; ii. Flow Measurement，Princeton+USC这边做了&lt;a title=&quot;Software Deﬁned Trafﬁc Measurement with OpenSketch&quot; href=&quot;http://www.stanford.edu/~lavanyaj/papers/meas.pdf&quot; target=&quot;_blank&quot;&gt;OpenSketch&lt;/a&gt;，很多其他学校也在做。流控成熟之后，就能方便上层应用提供更为智能的管理模式。
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  c) 广域网TE，Google及微软都在内部WAN采用SDN提高链路带宽利用率（G家提升到90%以上，对比参考传统MPLS一半左右的利用率）&lt;br /&gt; d) 为上层应用提供了网络虚拟化（IaaS的重要元素）&lt;br /&gt; e) 提供了学术研究的平台（testbed@北邮、清华、福州大学），当然也有水论文的机会&lt;br /&gt; f) 创业（这方面清华还是很有心得的）
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4、OpenFlow/SDN 的前景？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  a) 网络管理/安全/..等应用的开发（屌丝们的新阵地）&lt;br /&gt; b) 提升网络性能（QoS, QoE, 云, etc.）
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. &lt;a title=&quot;Linux kernel MultiPath TCP project&quot; href=&quot;http://mptcp.info.ucl.ac.be/&quot; target=&quot;_blank&quot;&gt;MPTCP&lt;/a&gt;，SC12中CIT和CERN做了一个&lt;a title=&quot;OpenFlow and Multipath TCP for Data Intensive Science&quot; href=&quot;http://supercomputing.caltech.edu/sc12_OF_Mptcp.html&quot; target=&quot;_blank&quot;&gt;DEMO&lt;/a&gt;。他们基于floodlight实现了支持多径的&lt;a title=&quot;OpenFlow Multipath Switching for LHCone&quot; href=&quot;http://indico.cern.ch/getFile.py/access?contribId=17&amp;amp;resId=0&amp;amp;materialId=slides&amp;amp;confId=212656&quot; target=&quot;_blank&quot;&gt;控制器&lt;/a&gt;。另外，西北大学、台湾成功大学+高雄大学、台湾高性能计算所、SARA、SURFnet等也都做了相关研究。[&lt;a title=&quot;Multipathing with MPTCP and OpenFlow&quot; href=&quot;https://noc.sara.nl/nrg/publications/SRS-2012-multipath.pdf&quot; target=&quot;_blank&quot;&gt;paper&lt;/a&gt;]&lt;br /&gt; ii. Load Balancing，早在&lt;a title=&quot;FlowScale demo at SC11&quot; href=&quot;http://sc11.supercomputing.org/schedule/event_detail.php?evid=rsand101&quot; target=&quot;_blank&quot;&gt;SC11&lt;/a&gt;，Indiana U就已经展示了他们的&lt;a title=&quot;OpenFlow Based Load Balancer&quot; href=&quot;https://github.com/InCNTRE/FlowScale&quot; target=&quot;_blank&quot;&gt;FlowScale&lt;/a&gt;系统[&lt;a title=&quot;FlowScale Home&quot; href=&quot;http://flowscale.openflowhub.org/&quot; target=&quot;_blank&quot;&gt;主页&lt;/a&gt;]。FlowScale现在也是IU&lt;a title=&quot;Multi-Gigabit Intrusion Detection with OpenFlow and Commodity Clusters&quot; href=&quot;http://flowscale.openflowhub.org/download/attachments/3244813/SPC-Present.pdf?version=1&amp;amp;modificationDate=1352408831000&quot; target=&quot;_blank&quot;&gt;入侵检测系统&lt;/a&gt;开发计划中的一部分。
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  c) 鼓励/引领创新&lt;br /&gt; d) 目光短浅，剩下就不知道了&amp;#8230;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5、OpenFlow/SDN 的问题？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  a) 系统
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. 控制器层面加入管理能力&lt;br /&gt; ii. 北向API 定义的竞争与局限（标准&amp;amp;IETF）&lt;br /&gt; iii. 控制器安全
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  b) 架构（集中式与分布式的长期之争）
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. 逻辑中心化+物理分布式的tradeoff（TU Berlin&amp;amp; UCB&amp;amp; Stanford）&lt;br /&gt; ii. &amp;#8220;控制虚拟机&amp;#8221;的状态/信息转移及判定方法（UWM, 细化了上面的讨论）&lt;br /&gt; iii. 多控制器（Stanford: Placement problem）&lt;br /&gt; iv. 控制器分层（UT: &lt;a title=&quot;Kandoo: A Framework for Efﬁcient and Scalable Ofﬂoading of Control Applications&quot; href=&quot;http://conferences.sigcomm.org/sigcomm/2012/paper/hotsdn/p19.pdf&quot; target=&quot;_blank&quot;&gt;Kandoo&lt;/a&gt;）&lt;br /&gt; v. 现网融合（VXLAN,因为组播,Cisco 各种被Juniper 吐槽&amp;#8230;）
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  c) 原理
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. TCAM 的局限（&lt;a title=&quot;MSRA在Sigcomm 2012，HotSDN分会场上的论文&quot; href=&quot;http://conferences.sigcomm.org/sigcomm/2012/paper/hotsdn/p31.pdf&quot; target=&quot;_blank&quot;&gt;MSRA+CPU&lt;/a&gt;; OpenFlow 的问题，也是网管问题的来源）。12年12月的采访中，Nicira创始人Martin Casado&lt;a title=&quot;Why Nicira abandoned OpenFlow hardware control&quot; href=&quot;http://searchnetworking.techtarget.com/news/2240174517/Why-Nicira-abandoned-OpenFlow-hardware-control&quot; target=&quot;_blank&quot;&gt;认为&lt;/a&gt;，OpenFlow在DCN中的实现应该基于Virtual Switch，而不是硬件OF交换机。&lt;br /&gt; ii. 对应于DPI（深度包解析）的支持（有人认为可以，有人认为不行）。不过，12年12月的SDN高峰会上，&lt;a title=&quot;武汉绿色网络信息服务有限责任公司&quot; href=&quot;http://www.greenet.net.cn&quot; target=&quot;_blank&quot;&gt;武汉绿网&lt;/a&gt;展示了基于X86平台的OpenFlow DPI&lt;a title=&quot;GN魔方平台&quot; href=&quot;http://www.greenet.net.cn/templets/greenet/cubeplatform/sdnxq.html&quot; target=&quot;_blank&quot;&gt;解决方案&lt;/a&gt;，性能可以达到10Mpps、40Gbps。
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 30px;&quot;&gt;
+  d) 应用
+&lt;/p&gt;
+
+&lt;p style=&quot;padding-left: 60px;&quot;&gt;
+  i. 流表冲突检测（&lt;a title=&quot;A Security Enforcement Kernel for OpenFlow Networks&quot; href=&quot;http://faculty.cs.tamu.edu/guofei/paper/FortNOX-HotSDN12.pdf&quot; target=&quot;_blank&quot;&gt;TAMU&lt;/a&gt; HotSDN 12，虽说主要是&amp;#8217;Security Enforcement Kernel&amp;#8217;，但是还是有部分内容处理流表项冲突）&lt;br /&gt; ii. 攻击防范（e.g. Sigcomm 2012[&lt;a title=&quot;Hot Topics in Software Defined Networking (HotSDN)&quot; href=&quot;http://conferences.sigcomm.org/sigcomm/2012/hotsdn.php&quot; target=&quot;_blank&quot;&gt;HotSDN&lt;/a&gt;]，&lt;a title=&quot;OpenFlow Random Host Mutation: Transparent Moving Target Defense using Software Deﬁned Networking&quot; href=&quot;http://conferences.sigcomm.org/sigcomm/2012/paper/hotsdn/p127.pdf&quot; target=&quot;_blank&quot;&gt;北卡夏洛特&lt;/a&gt;）&lt;br /&gt; iii. 管理功能の部署（Stanford,似乎是参与设计NetFPGA 的清华GG 在做这个诶,prototype:精灵&amp;#8230;膜拜）
+&lt;/p&gt;
+
+&lt;p&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;更新历史：&lt;/strong&gt;&lt;br /&gt;
+2013-07-23 更新 2.d，添加现有管理协议； 添加 3.c； 修改 5.a.i&lt;br /&gt;
+2014-01-16 添加链接 5.d.i&lt;br /&gt;
+2014-01-26 更新The Open vSwitch Database Management Protocol RFC文档链接&lt;br /&gt;
+2014-02-19 添加链接 2.d.i&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Dec 2012 00:00:00 -0800</pubDate>
+        <link>http://richardzhao.me/2012/12/07/%e6%9c%89%e5%85%b3-openflowsdn-%e7%9a%84%e5%b0%8f%e6%80%bb%e7%bb%93%e6%b1%82%e6%8b%8d%e8%bd%ac/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2012/12/07/%e6%9c%89%e5%85%b3-openflowsdn-%e7%9a%84%e5%b0%8f%e6%80%bb%e7%bb%93%e6%b1%82%e6%8b%8d%e8%bd%ac/</guid>
+        
+        <category>OpenFlow</category>
+        
+        <category>SDN</category>
+        
+        
+        <category>技术</category>
+        
+      </item>
+    
+      <item>
+        <title>[转载]The Northbound API is the key to OpenFlow’s Success</title>
+        <description>&lt;p&gt;最近申请忙的要死，也没有多少时间没发文章…&lt;/p&gt;
+
+&lt;p&gt;今天转载一份，&lt;a href=&quot;http://www.sdncentral.com&quot;&gt;SDN Central&lt;/a&gt;11月8号的文章：The Northbound API is the key to OpenFlow’s Success。文章主要讨论了API对于SDN/OpenFlow的重要意义，下面是正文&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.sdncentral.com/wp-content/uploads/2012/11/Puzzle-Piece.jpg&quot; alt=&quot;Puzzle Piece&quot; title=&quot;Puzzle Piece&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The Southbound interface between the &lt;a title=&quot;SDNCentral Shipping Products&quot; href=&quot;http://www.sdncentral.com/shipping-sdn-products/&quot; target=&quot;_blank&quot;&gt;switch&lt;/a&gt; and the&lt;a title=&quot;SDNCentral Announced SDN Products&quot; href=&quot;http://www.sdncentral.com/announced-sdn-products/&quot; target=&quot;_blank&quot;&gt; controller&lt;/a&gt; was key to significant &lt;a href=&quot;http://www.sdncentral.com/products-technologies/hp-throws-down-the-gauntlet-in-the-sdn-arena/2012/10/&quot;&gt;SDN&lt;/a&gt;possibilities.  However, the Northbound interface between orchestration and management systems with the controller will determine the success OpenFlow achieves in the network.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.sdncentral.com/guest-blog-posts/how-network-virtualization-has-helped-shaped-ha-and-disaster-recovery/2012/11/&quot;&gt;It&lt;/a&gt; is important to recognize that the OpenFlow controller is not necessarily a management platform.  It provides a standard and controlled interface to the data plane.  Without it, the idea of SDN requires communication directly to a network device.  The leading network vendors are currently promoting this approach when they talk about their SDN solutions.  While that meets the definition of “Software Defined Networking”, it is a short-sighted vision of the future network.  It would require every agent that wished to interact with the network to know about every device in the network (or at least those it wishes to control – and how does it know that?).&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;A controller, that has visibility into the entire network is the central control point.  But, the controller should not become a monolithic everything application.  Instead, it should interface with separate systems providing both updates about network performance and an interface for systems to provide network and security orchestration. These orchestration and management applications are the true brain of an OpenFlow network.  The controller is a middle-man.  And this is why the &lt;a title=&quot;OpenFlow Northbound API – A New Olympic Sport&quot; href=&quot;http://www.sdncentral.com/sdn-blog/openflow-northbound-api-olympics/2012/07/&quot; target=&quot;_blank&quot;&gt;Northbound API&lt;/a&gt; is so critical.&lt;/p&gt;
+
+&lt;p&gt;This Northbound API is not defined today.  The &lt;a title=&quot;ONF&quot; href=&quot;http://www.sdncentral.com/listings/open-networking-foundation&quot; target=&quot;_blank&quot;&gt;ONF&lt;/a&gt; has taking the initial steps of &lt;a href=&quot;https://www.opennetworking.org/new-working-groups/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;creating a discussion group&lt;/a&gt;.  While this is short of a full working group to define an &lt;a title=&quot;SDN Resources: API&quot; href=&quot;http://www.sdncentral.com/comprehensive-list-of-sdn-apis/&quot; target=&quot;_blank&quot;&gt;API&lt;/a&gt;, it is a pragmatic step that is likely to result in active projects such as &lt;a href=&quot;http://www.sdncentral.com/comprehensive-list-of-open-source-sdn-projects/&quot; target=&quot;_blank&quot;&gt;OpenStack&lt;/a&gt; that are moving rapidly to influence the resulting API.  This is likely going to result in the continuation of proprietary API’s for sometime to come, but also result in rapid expansion of the Northbound API.  It may be chaotic, but I think this has the potential of creating a robust API in a short amount of time, which will be critical to the success of OpenFlow.&lt;/p&gt;
+
+&lt;p&gt;The possibilities of SDN, in particular OpenFlow, are exciting.  But to see the possible become reality will depend on how quickly a capable and usable Northbound API is developed.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Guest Blogger Disclaimer:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The views, opinions and positions expressed within these guest posts are those of the author alone and do not represent those of &lt;/em&gt;&lt;a href=&quot;http://sdncentral.com/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;&lt;em&gt;SDNCentral.com&lt;/em&gt;&lt;/a&gt;&lt;em&gt; and SDNCentral, LLC. The accuracy, completeness and validity of any statements made within this article are not guaranteed. We accept no liability for any errors, omissions or representations. The copyright of this content belongs to the author and any liability with regards to infringement of intellectual property rights remains with them.&lt;/em&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 13 Nov 2012 00:00:00 -0800</pubDate>
+        <link>http://richardzhao.me/2012/11/13/%e8%bd%ac%e8%bd%bdthe-northbound-api-is-the-key-to-openflows-success/</link>
+        <guid isPermaLink="true">http://richardzhao.me/2012/11/13/%e8%bd%ac%e8%bd%bdthe-northbound-api-is-the-key-to-openflows-success/</guid>
+        
+        <category>API</category>
+        
+        <category>System</category>
+        
+        
+        <category>技术</category>
+        
+      </item>
+    
+  </channel>
+</rss>

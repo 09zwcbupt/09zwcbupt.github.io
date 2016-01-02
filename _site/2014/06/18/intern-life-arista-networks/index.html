@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Intern @ ARISTA NETWORKS</title>
+  <meta name="description" content="壹">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://richardzhao.me/2014/06/18/intern-life-arista-networks/">
+  <link rel="alternate" type="application/rss+xml" title="" href="http://richardzhao.me/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/"></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/tools/">Tools/Doc</a>
+          
+        
+          
+          <a class="page-link" href="/sample-page/">Sample Page</a>
+          
+        
+          
+          <a class="page-link" href="/focusing-on/">Reading List</a>
+          
+        
+          
+          <a class="page-link" href="/about-me/">About Me</a>
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Intern @ ARISTA NETWORKS</h1>
+    <p class="post-meta"><time datetime="2014-06-18T00:00:00-07:00" itemprop="datePublished">Jun 18, 2014</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">richard</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <!--:zh-->
+<p>壹</p>
+
+<p>听之前在这边实习过的学长说，Arista主要用Python和C。后来面试的时候，面试官轻描淡写的说，我们用C++；不会没关系，过来之后学就好了。才问了两个人，口径就不一致了…</p>
+
+<p>等到入职之后才发现，公司虽说在用，但C++代码只是临时文件一样的地位。程序猿们手写/面对的是更上层的语言（TACC），每次动手也只需要修改Entity之间的逻辑关系。每当编译的时候，TACC代码就会通过编译器生成C++中对应的各种类以及类中的接口函数。这么做一个明显的好处是，搭建系统的时候速度会非常快。举个例子，入职培训中有一个简单的教程，是关于怎么写一个系统插件。按照这个教程写下来，TACC代码大概是50行，但是编译到C++后，代码变到了2000行以上…</p>
+
+<p>关于TACC，有一个介绍文档：</p>
+
+<div style="margin-bottom: 5px;">
+  <strong> <a title="SDEC2011 Going by TACC" href="https://www.slideshare.net/sdec2011/sdec2011-going-by-tacc" target="_blank">SDEC2011 Going by TACC</a> </strong> from <strong><a href="http://www.slideshare.net/sdec2011" target="_blank">Korea Sdec</a></strong>
+</div>
+
+<div style="margin-bottom: 5px;">
+</div>
+
+<p>顺便八一卦，这个TACC是另一个公司(OptumSoft)的产品。这个公司是和Arista一起成长起来的，不仅员工在两个公司创立之初时一起工作，就连OptumSoft的创始人David Cheriton也是Arista的创始人之一。此外，Arista还是TACC唯一的用户。这些看起来都很美好，然后事情就变得狗血起来… Arista的发展非常成功，公司规模逐渐扩大，也搬进了现在所在的大楼，外加准备上市；但是OptumSoft却没那么顺利，被认为会是一个失败的创业项目。不知道David Cheriton是中了什么邪，就在Arista准备上市+自己将会是最大的持股人的时候讲其告上法庭，并且企图获得TACC的改进，乃至通过TACC生成的软件（包括Arista Switch的操作系统）的所有权。业内人士纷纷表示呵呵，很多人都认为这种奇葩的做法只是为了挽救OptumSoft。好在Arista在我入职后的第一个周五成功上市。</p>
+
+<p>贰 – BPF</p>
+
+<p>第一个项目很简单，作为练手+熟悉系统。第二个就复杂些。其中一个环节是加入BPF。没什么好写的，直接上参考链接:</p>
+
+<div style="margin-bottom: 5px;">
+  <ol>
+    <li>
+      McCanne, Steven; Jacobson, Van (1992-12-19). &#8220;<a title="McCanne, Steven; Jacobson, Van (1992-12-19). " href="http://www.tcpdump.org/papers/bpf-usenix93.pdf" target="_blank">The BSD Packet Filter: A New Architecture for User-level Packet Capture</a>&#8220;
+    </li>
+    <li>
+      <a title="Berkeley Packet Filters – The Basics Jeff Stebelton" href="http://www.infosecwriters.com/text_resources/pdf/JStebelton_BPF.pdf" target="_blank">Berkeley Packet Filters – The BasicsJeff Stebelton</a>
+    </li>
+    <li>
+      [kernel doc]<a title="Linux Socket Filtering aka Berkeley Packet Filter (BPF)" href="https://www.kernel.org/doc/Documentation/networking/filter.txt" target="_blank">Linux Socket Filtering aka Berkeley Packet Filter (BPF)</a>
+    </li>
+    <li>
+      [FreeBSD man 4]<a title="Berkeley Packet Filter" href="http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;sektion=4&amp;apropos=0&amp;manpath=FreeBSD+10.0-RELEASE" target="_blank">Berkeley Packet Filter</a>
+    </li>
+    <li>
+      [FreeBSD man 9]<a title="Berkeley Packet Filter" href="http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;sektion=9&amp;apropos=0&amp;manpath=FreeBSD+10.0-RELEASE" target="_blank">Berkeley Packet Filter</a>
+    </li>
+    <li>
+      <a title="Programming with pcap" href="http://www.tcpdump.org/pcap.html" target="_blank">Programming with pcap</a>
+    </li>
+  </ol>
+</div>
+
+<p>ENG:</p>
+
+<!--:-->
+
+<!--:en-->
+<p>1</p>
+
+<div style="margin-bottom: 5px;">
+  <strong> <a title="SDEC2011 Going by TACC" href="https://www.slideshare.net/sdec2011/sdec2011-going-by-tacc" target="_blank">SDEC2011 Going by TACC</a> </strong> from <strong><a href="http://www.slideshare.net/sdec2011" target="_blank">Korea Sdec</a></strong>
+</div>
+
+<p> </p>
+
+<p>2</p>
+
+<p>As part of project 2 is related to BPF, I am learning BPF and searching for tutorials. The kernel document seems to be good learning material, however the example program is not runnable. So, I wrote a <a title="socket filter" href="https://github.com/09zwcbupt/personal/blob/master/bpf/sock_filter.c" target="_blank">version</a> based on it (using socket filter in linux), and also <a title="pcap bpf" href="https://github.com/09zwcbupt/personal/blob/master/bpf/pcap_bpf.c" target="_blank">another version</a> using functions in libpcap to generate rules and filter packets.</p>
+
+<p>Basically, BPF is used on raw sockets to filter out traffic that is not interesting. But it turns out that the filter also works with datagram socket (UDP socket). According to <a title="Using BPF with SOCK_DGRAM on Linux machine" href="http://stackoverflow.com/questions/24514333/using-bpf-with-sock-dgram-on-linux-machine" target="_blank">Using BPF with SOCK_DGRAM on Linux machine</a>, as the compiled filter works on bytes that is received from sockets, plus the UDP socket can see from the UDP layer of the packet, the meaning of `ldb 0` is changed from reading the first byte of destination MAC address to reading the first byte of the source port. This change means I’ll have trouble if I am using libpcap generated filter code on a UDP socket. And to solve that, either change the rule in to some meaning less combination (like “udp[8] == 0x00″ -&gt; “ether[8] == 0x00″), or try to adjust generated code to load proper byte of the received packet.</p>
+
+<p>Reference:</p>
+
+<ol>
+  <li>McCanne, Steven; Jacobson, Van (1992-12-19). “<a title="McCanne, Steven; Jacobson, Van (1992-12-19). " href="http://www.tcpdump.org/papers/bpf-usenix93.pdf" target="_blank">The BSD Packet Filter: A New Architecture for User-level Packet Capture</a>“</li>
+  <li><a title="Berkeley Packet Filters – The Basics Jeff Stebelton" href="http://www.infosecwriters.com/text_resources/pdf/JStebelton_BPF.pdf" target="_blank">Berkeley Packet Filters – The BasicsJeff Stebelton</a></li>
+  <li>[kernel doc]<a title="Linux Socket Filtering aka Berkeley Packet Filter (BPF)" href="https://www.kernel.org/doc/Documentation/networking/filter.txt" target="_blank">Linux Socket Filtering aka Berkeley Packet Filter (BPF)</a></li>
+  <li>[FreeBSD man 4]<a title="Berkeley Packet Filter" href="http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;sektion=4&amp;apropos=0&amp;manpath=FreeBSD+10.0-RELEASE" target="_blank">Berkeley Packet Filter</a></li>
+  <li>[FreeBSD man 9]<a title="Berkeley Packet Filter" href="http://www.freebsd.org/cgi/man.cgi?query=bpf&amp;sektion=9&amp;apropos=0&amp;manpath=FreeBSD+10.0-RELEASE" target="_blank">Berkeley Packet Filter</a></li>
+  <li><a title="Programming with pcap" href="http://www.tcpdump.org/pcap.html" target="_blank">Programming with pcap</a></li>
+</ol>
+
+<!--:-->
+
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+       */
+      /*
+      var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() {  // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+        
+          s.src = '//weichen.disqus.com/embed.js';
+        
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading"></h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li></li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Working on Network &amp; SDN</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
